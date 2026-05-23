@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OPX LIFE OS</title>
 <!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -2534,39 +2534,23 @@ function load() {
 // ════════════════════════════════════════════════════
 const SUPABASE_URL  = 'https://czjytskydvfxbtablzss.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6anl0c2t5ZHZmeGJ0YWJsenNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTUwNDIsImV4cCI6MjA5NDY5MTA0Mn0.lYvitM5alNp-tHqptgkbR1yx5Y9M7HDq8D0NSnpE9vM';
-// Init Supabase — using window assignment to avoid const re-declaration conflicts
-var supabase = (function() {
-  var lib = window.supabase || window.Supabase;
-  if (!lib || !lib.createClient) {
-    console.error('[OPX] Supabase SDK not loaded!');
-    return null;
-  }
-  return lib.createClient(SUPABASE_URL, SUPABASE_ANON);
-})();
-if (!supabase) alert('Auth library failed to load. Please refresh the page.');
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 let currentUser = null;
 
 // ── AUTH HELPERS ──────────────────────────────────────
 async function signInWithGoogle() {
+  showAuthLoading('Opening Google login...');
   clearAuthError();
-  showAuthLoading('Redirecting to Google...');
-  console.log('[OPX] signInWithGoogle — supabase:', !!supabase);
-  if (!supabase) { showAuthError('Auth not loaded. Please refresh.'); hideAuthLoading(); return; }
   try {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: 'https://opxlifeos.netlify.app',
-        queryParams: { access_type: 'offline', prompt: 'select_account' }
-      }
+      options: { redirectTo: window.location.href }
     });
-    console.log('[OPX] OAuth result:', JSON.stringify(data), error?.message);
     if (error) throw error;
   } catch(err) {
-    console.error('[OPX] OAuth error:', err);
     hideAuthLoading();
-    showAuthError('Error: ' + (err.message || 'Unknown. Open F12 console for details.'));
+    showAuthError('Sign-in failed: ' + (err.message || 'Unknown error'));
   }
 }
 
@@ -2652,84 +2636,125 @@ function setSyncDot(state) {
 
 // ── LOAD DATA FROM SUPABASE ───────────────────────────
 async function loadFromStorage() {
-  // Step 1: instant load from localStorage
-  try {
-    const raw = localStorage.getItem('opx2');
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      S = { ...DEF, ...parsed };
-      S.nofap   = { ...DEF.nofap,   ...S.nofap   };
-      S.finance  = { ...DEF.finance,  ...S.finance  };
-      S.earning  = { ...DEF.earning,  ...S.earning  };
-      S.settings = { ...DEF.settings, ...S.settings };
-    } else { S = { ...DEF }; }
-  } catch(e) { S = { ...DEF }; }
+  // ── CLOUD IS ALWAYS SOURCE OF TRUTH ──────────────────────────────────────
+  // Strategy: try cloud first (always). On fail, fall back to localStorage.
+  // Never render stale localStorage while waiting for cloud.
 
-  // Step 2: pull from Supabase if user is logged in
+  let cloudLoaded = false;
+
   if (currentUser) {
     try {
       const { data, error } = await supabase
         .from('lifeos_data')
         .select('data')
         .eq('user_id', currentUser.id)
-        .single();
+        .maybeSingle();                          // maybeSingle = no error if row missing
       if (!error && data?.data) {
         const cloud = data.data;
         S = { ...DEF, ...cloud };
-        S.nofap   = { ...DEF.nofap,   ...S.nofap   };
-        S.finance  = { ...DEF.finance,  ...S.finance  };
-        S.earning  = { ...DEF.earning,  ...S.earning  };
-        S.settings = { ...DEF.settings, ...S.settings };
+        S.nofap    = { ...DEF.nofap,    ...S.nofap    };
+        S.finance   = { ...DEF.finance,   ...S.finance   };
+        S.earning   = { ...DEF.earning,   ...S.earning   };
+        S.settings  = { ...DEF.settings,  ...S.settings  };
+        S.customCategories = { ...DEF.customCategories, ...(S.customCategories || {}) };
+        // Write cloud data to localStorage so offline works after first load
         try { localStorage.setItem('opx2', JSON.stringify(S)); } catch(e) {}
+        cloudLoaded = true;
+        console.log('[OPX] Loaded from cloud ✅');
+      } else if (error) {
+        console.warn('[OPX] Cloud load error:', error.message);
+      } else {
+        console.log('[OPX] No cloud row yet — using localStorage or defaults');
       }
-    } catch(e) { /* no cloud data yet — that's fine, use defaults */ }
+    } catch(e) {
+      console.warn('[OPX] Cloud fetch threw:', e.message);
+    }
   }
 
-  // Step 3: ensure arrays exist
+  // Only use localStorage if cloud had nothing
+  if (!cloudLoaded) {
+    try {
+      const raw = localStorage.getItem('opx2');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        S = { ...DEF, ...parsed };
+        S.nofap    = { ...DEF.nofap,    ...S.nofap    };
+        S.finance   = { ...DEF.finance,   ...S.finance   };
+        S.earning   = { ...DEF.earning,   ...S.earning   };
+        S.settings  = { ...DEF.settings,  ...S.settings  };
+        S.customCategories = { ...DEF.customCategories, ...(S.customCategories || {}) };
+        console.log('[OPX] Loaded from localStorage ✅');
+        // Push local data up to cloud so other devices get it
+        if (currentUser) _pushToCloud();
+      } else {
+        S = { ...DEF };
+        console.log('[OPX] No data anywhere — using defaults');
+      }
+    } catch(e) { S = { ...DEF }; }
+  }
+
+  // Ensure arrays always exist
   if (!Array.isArray(S.quests))  S.quests  = defaultQuests();
   if (!Array.isArray(S.habits))  S.habits  = defaultHabits();
   if (!Array.isArray(S.cars))    S.cars    = defaultCars();
   if (!Array.isArray(S.books))   S.books   = defaultBooks();
   if (!Array.isArray(S.goals))   S.goals   = defaultGoals();
   if (!Array.isArray(S.rewards)) S.rewards = defaultRewards();
-  if (!S.nofap.start)            S.nofap.start = today();
+  if (!Array.isArray(S.movies))  S.movies  = [];
+  if (!Array.isArray(S.music))   S.music   = [];
+  if (!Array.isArray(S.tech))    S.tech    = [];
+  if (!Array.isArray(S.routines)) S.routines = [];
+  if (!S.nofap.start) S.nofap.start = today();
 }
 
-// ── SAVE DATA TO SUPABASE ─────────────────────────────
-let _savePending = false;
+// Push local data to cloud (used when device has local data but no cloud row yet)
+async function _pushToCloud() {
+  if (!currentUser || !S) return;
+  try {
+    await supabase.from('lifeos_data').upsert(
+      { user_id: currentUser.id, data: S, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id' }
+    );
+    console.log('[OPX] Pushed local data to cloud');
+  } catch(e) { console.warn('[OPX] Push failed:', e.message); }
+}
+
+// ── SAVE DATA TO SUPABASE ────────────────────────────────────────────────────
+let _saveTimer = null;
 function save() {
+  // 1. Instant localStorage write (offline safety net)
+  try { localStorage.setItem('opx2', JSON.stringify(S)); } catch(e) {}
+
+  // 2. Show saving indicator
   const ind = document.getElementById('save-indicator');
   const lbl = document.getElementById('save-label');
   if (ind) { ind.className = 'saving'; lbl.textContent = 'Saving...'; }
-  // Always instant-write to localStorage
-  try { localStorage.setItem('opx2', JSON.stringify(S)); } catch(e) {}
-  // Debounced cloud sync
-  if (!_savePending) {
-    _savePending = true;
-    setSyncDot('syncing');
-    setTimeout(async () => {
-      _savePending = false;
-      if (!currentUser) {
-        setSyncDot('offline');
-        if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Local'; setTimeout(() => { ind.className = ''; }, 1500); }
-        return;
-      }
-      try {
-        const { error } = await supabase
-          .from('lifeos_data')
-          .upsert(
-            { user_id: currentUser.id, data: S, updated_at: new Date().toISOString() },
-            { onConflict: 'user_id' }
-          );
-        if (error) throw error;
-        setSyncDot('synced');
-        if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Synced'; setTimeout(() => { ind.className = ''; }, 1500); }
-      } catch(err) {
-        setSyncDot('error');
-        if (ind) { ind.className = 'saved'; lbl.textContent = '⚠ Sync error'; setTimeout(() => { ind.className = ''; }, 2500); }
-      }
-    }, 700);
-  }
+  setSyncDot('syncing');
+
+  // 3. Debounced cloud write — waits 800ms after last save() call
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(async () => {
+    if (!currentUser) {
+      setSyncDot('offline');
+      if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Local only'; setTimeout(() => { ind.className = ''; }, 1500); }
+      return;
+    }
+    try {
+      const { error } = await supabase
+        .from('lifeos_data')
+        .upsert(
+          { user_id: currentUser.id, data: S, updated_at: new Date().toISOString() },
+          { onConflict: 'user_id' }
+        );
+      if (error) throw error;
+      setSyncDot('synced');
+      if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Synced'; setTimeout(() => { ind.className = ''; }, 1500); }
+    } catch(err) {
+      console.error('[OPX] Save error:', err.message);
+      setSyncDot('error');
+      if (ind) { ind.className = 'saved'; lbl.textContent = '⚠ Sync error'; setTimeout(() => { ind.className = ''; }, 2500); }
+    }
+  }, 800);
 }
 
 // ═══════════════════════════════════
@@ -3823,7 +3848,17 @@ function renderSettings(){
   document.getElementById('set-wt').value   = S.settings.weight || 105;
   document.getElementById('set-gwt').value  = S.settings.goalWeight || 80;
 }
-function confirmReset(){if(confirm('Delete EVERYTHING? Cannot undo!')){localStorage.removeItem('opx2');try{window.storage.delete('opx_data');}catch(e){}location.reload();}}
+async function confirmReset() {
+  if (!confirm('Delete EVERYTHING and start fresh? This cannot be undone!')) return;
+  localStorage.removeItem('opx2');
+  if (currentUser && supabase) {
+    try {
+      await supabase.from('lifeos_data').delete().eq('user_id', currentUser.id);
+      console.log('[OPX] Cloud data deleted');
+    } catch(e) { console.warn('[OPX] Cloud delete failed:', e.message); }
+  }
+  location.reload();
+}
 function exportData(){
   const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
@@ -5664,30 +5699,61 @@ function bootApp() {
 }
 
 (async () => {
-  // React to auth changes (handles OAuth redirect + session restore)
+  let booted = false;
+
+  // Show a loading state in the auth overlay while we check session
+  showAuthLoading('Loading your data...');
+
   supabase.auth.onAuthStateChange(async (event, session) => {
-    if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+    console.log('[OPX] Auth:', event, session?.user?.email || 'none');
+
+    if (session?.user && !booted) {
+      booted = true;
       currentUser = session.user;
       updateUserChip(currentUser);
+      showAuthLoading('Syncing data...');
+      await loadFromStorage();  // ALWAYS waits for cloud before rendering
       hideAuthOverlay();
-      await loadFromStorage();
       bootApp();
+
+    } else if (event === 'TOKEN_REFRESHED' && session?.user && booted) {
+      // Token refreshed (tab came back into focus) — re-sync data silently
+      console.log('[OPX] Token refreshed — re-syncing');
+      currentUser = session.user;
+      const prevPts = S.points;
+      await loadFromStorage();
+      if (S.points !== prevPts) {
+        // Data changed on another device — re-render
+        updateHUD();
+        renderDashboard();
+        toast('🔄 Data synced from another device', 'success');
+      }
+
     } else if (event === 'SIGNED_OUT') {
+      booted = false;
       currentUser = null;
-      document.getElementById('user-chip').classList.remove('visible');
+      const chip = document.getElementById('user-chip');
+      if (chip) chip.classList.remove('visible');
       showAuthOverlay();
       hideAuthLoading();
     }
   });
 
-  // Check for existing session (page refresh / returning user)
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
-    // No active session — show login screen
+  // Check for session immediately on page load
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (error) console.warn('[OPX] getSession error:', error.message);
+    if (!session) {
+      // No session — show login screen
+      showAuthOverlay();
+      hideAuthLoading();
+    }
+    // If session exists → onAuthStateChange fires INITIAL_SESSION → boots
+  } catch(e) {
+    console.error('[OPX] Init error:', e);
     showAuthOverlay();
     hideAuthLoading();
   }
-  // If session exists, onAuthStateChange fires INITIAL_SESSION → boots app automatically
 })();
 </script>
 </body>
