@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OPX LIFE OS</title>
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -994,9 +996,144 @@ textarea.inp { resize: vertical; min-height: 80px; line-height: 1.5; }
   .g2,.g3,.g4 { grid-template-columns: 1fr; }
   #content { padding: 16px; }
 }
+/* ── AUTH OVERLAY ── */
+#auth-overlay {
+  position: fixed; inset: 0; z-index: 99999;
+  background: #0a0a0f;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.4s ease;
+}
+#auth-overlay.hidden { opacity: 0; pointer-events: none; }
+#auth-overlay::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(91,141,239,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+.auth-card {
+  background: #16161f; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 24px; padding: 44px 40px;
+  width: 100%; max-width: 400px; text-align: center;
+  position: relative; box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+  animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.auth-logo {
+  width: 56px; height: 56px;
+  background: linear-gradient(135deg, #5b8def, #a78bfa);
+  border-radius: 18px; display: flex; align-items: center; justify-content: center;
+  font-size: 26px; margin: 0 auto 20px; box-shadow: 0 8px 28px rgba(91,141,239,0.4);
+}
+.auth-title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; color: #f0f0f8; }
+.auth-sub { font-size: 13px; color: #9090b0; margin-bottom: 32px; line-height: 1.7; }
+.google-btn {
+  width: 100%; padding: 14px 20px; background: #fff; color: #1a1a1a;
+  border: none; border-radius: 12px; font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+  font-family: 'Inter', sans-serif;
+}
+.google-btn:hover { background: #f4f4f4; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
+.google-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+.auth-note { font-size: 11px; color: #5a5a78; margin-top: 18px; line-height: 1.7; }
+.auth-error { font-size: 12px; color: #f87171; margin-top: 10px; min-height: 16px; }
+.auth-spinner-wrap { display: none; flex-direction: column; align-items: center; gap: 16px; padding: 12px 0; }
+.auth-spinner-wrap.active { display: flex; }
+.auth-spinner {
+  width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: #5b8def; border-radius: 50%;
+  animation: authSpin 0.75s linear infinite;
+}
+.auth-spinner-text { font-size: 13px; color: #9090b0; }
+@keyframes authSpin { to { transform: rotate(360deg); } }
+/* ── USER CHIP ── */
+.user-chip {
+  display: none; align-items: center; gap: 8px;
+  padding: 5px 11px 5px 5px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px; cursor: pointer; transition: all 0.2s;
+  position: relative; margin-left: 10px;
+}
+.user-chip.visible { display: flex; }
+.user-chip:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); }
+.user-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15); }
+.user-avatar-fallback {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, #5b8def, #a78bfa);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; flex-shrink: 0; color: #fff;
+}
+.user-name-chip { font-size: 12px; font-weight: 600; color: #f0f0f8; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sync-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: #34d399;
+  flex-shrink: 0; box-shadow: 0 0 6px #34d399; transition: background 0.3s, box-shadow 0.3s;
+}
+.sync-dot.syncing { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; animation: syncPulse 1.2s ease infinite; }
+.sync-dot.offline { background: #9090b0; box-shadow: none; }
+.sync-dot.error   { background: #f87171; box-shadow: 0 0 6px #f87171; }
+@keyframes syncPulse { 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+/* ── USER DROPDOWN ── */
+.user-dropdown {
+  display: none; position: absolute; top: calc(100% + 10px); right: 0;
+  background: #16161f; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px; padding: 8px; min-width: 230px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6); z-index: 9999;
+  animation: fadeIn 0.15s ease;
+}
+.user-dropdown.open { display: block; }
+.user-dd-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.07); margin-bottom: 6px;
+}
+.user-dd-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.1); }
+.user-dd-avatar-fallback {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #5b8def, #a78bfa);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; flex-shrink: 0; color: #fff;
+}
+.user-dd-name { font-size: 13px; font-weight: 700; color: #f0f0f8; }
+.user-dd-email { font-size: 11px; color: #5a5a78; margin-top: 2px; word-break: break-all; }
+.user-dd-sync-row {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  border-radius: 10px; font-size: 12px; color: #9090b0; margin-bottom: 4px;
+}
+.user-dd-btn {
+  width: 100%; padding: 9px 12px; border-radius: 10px; border: none;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  transition: all 0.2s; font-family: 'Inter', sans-serif;
+  background: transparent; color: #f87171; text-align: left;
+}
+.user-dd-btn:hover { background: rgba(248,113,113,0.1); }
+
 </style>
 </head>
 <body>
+
+<!-- ══ AUTH OVERLAY ══ -->
+<div id="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-logo">⚡</div>
+    <div class="auth-title">OPX LIFE OS</div>
+    <div class="auth-sub">Your personal life operating system.<br>Sign in to sync data across all your devices.</div>
+    <div id="auth-main">
+      <button class="google-btn" onclick="signInWithGoogle()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+      <div class="auth-error" id="auth-error"></div>
+      <p class="auth-note">&#128274; Your data is private and tied to your Google account only. Nobody else can access it.</p>
+    </div>
+    <div class="auth-spinner-wrap" id="auth-loading">
+      <div class="auth-spinner"></div>
+      <div class="auth-spinner-text" id="auth-loading-text">Signing you in...</div>
+    </div>
+  </div>
+</div>
 
 <!-- VACATION BANNER -->
 <div id="vacation-banner">
@@ -1012,12 +1149,6 @@ textarea.inp { resize: vertical; min-height: 80px; line-height: 1.5; }
     OPX LIFE OS
   </div>
   <div id="clock-widget">
-<div id="firebase-auth-bar" style="display:flex;align-items:center;gap:10px;margin-left:14px;">
-  <div id="user-profile-box" style="display:flex;align-items:center;gap:8px;"></div>
-  <button class="btn btn-glass btn-sm" id="google-login-btn" onclick="window.firebaseSync.login()">Google Login</button>
-  <button class="btn btn-danger btn-sm" id="google-logout-btn" style="display:none;" onclick="window.firebaseSync.logout()">Logout</button>
-</div>
-
     <div id="live-date"></div>
     <div id="live-time"></div>
     <div class="level-badge">
@@ -1026,6 +1157,27 @@ textarea.inp { resize: vertical; min-height: 80px; line-height: 1.5; }
     </div>
     <div class="pts-badge" id="hud-pts">0 pts</div>
     <div class="streak-badge" id="hud-streak">0🔥</div>
+  </div>
+  <div class="user-chip" id="user-chip" onclick="toggleUserDropdown()">
+    <div class="user-avatar-fallback" id="chip-avatar-fallback">O</div>
+    <img class="user-avatar" id="chip-avatar" src="" alt="" style="display:none;">
+    <span class="user-name-chip" id="chip-name">OPX</span>
+    <div class="sync-dot" id="sync-dot"></div>
+    <div class="user-dropdown" id="user-dropdown">
+      <div class="user-dd-header">
+        <div class="user-dd-avatar-fallback" id="dd-avatar-fallback">O</div>
+        <img class="user-dd-avatar" id="dd-avatar" src="" alt="" style="display:none;">
+        <div>
+          <div class="user-dd-name" id="dd-name">OPX</div>
+          <div class="user-dd-email" id="dd-email"></div>
+        </div>
+      </div>
+      <div class="user-dd-sync-row">
+        <div class="sync-dot" id="dd-sync-dot"></div>
+        <span id="dd-sync-label">Synced to cloud</span>
+      </div>
+      <button class="user-dd-btn" onclick="event.stopPropagation();signOutUser()">&#128682; Sign Out</button>
+    </div>
   </div>
 </div>
 
@@ -2341,164 +2493,6 @@ textarea.inp { resize: vertical; min-height: 80px; line-height: 1.5; }
 <div id="toast-container"></div>
 <div id="save-indicator"><div class="save-dot"></div><span id="save-label">Saving...</span></div>
 
-
-<!-- Firebase SDK -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  onSnapshot,
-  enableIndexedDbPersistence
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDyM9E3QUCMYBUkdf-stR4vJtnkwDocwsA",
-  authDomain: "operatorx-cda14.firebaseapp.com",
-  projectId: "operatorx-cda14",
-  storageBucket: "operatorx-cda14.firebasestorage.app",
-  messagingSenderId: "650068174721",
-  appId: "1:650068174721:web:624194949260d94effaa80",
-  measurementId: "G-KG7RM4GJDX"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-enableIndexedDbPersistence(db).catch(() => {});
-
-window.firebaseSync = {
-  auth,
-  db,
-  currentUser: null,
-  syncing: false,
-
-  async login() {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-  },
-
-  async logout() {
-    await signOut(auth);
-  },
-
-  async saveData(data) {
-    if (!this.currentUser || this.syncing) return;
-
-    try {
-      await setDoc(
-        doc(db, "lifeos_users", this.currentUser.uid),
-        {
-          data,
-          updatedAt: Date.now(),
-          email: this.currentUser.email,
-          name: this.currentUser.displayName
-        },
-        { merge: true }
-      );
-
-      const syncStatus = document.getElementById("sync-status");
-      if (syncStatus) syncStatus.textContent = "☁ Synced";
-    } catch (e) {
-      console.error("Firebase sync error:", e);
-    }
-  },
-
-  async loadData() {
-    if (!this.currentUser) return null;
-
-    try {
-      const snap = await getDoc(doc(db, "lifeos_users", this.currentUser.uid));
-
-      if (snap.exists()) {
-        return snap.data().data;
-      }
-    } catch (e) {
-      console.error("Firebase load error:", e);
-    }
-
-    return null;
-  },
-
-  watchRealtime(callback) {
-    if (!this.currentUser) return;
-
-    return onSnapshot(
-      doc(db, "lifeos_users", this.currentUser.uid),
-      (snap) => {
-        if (!snap.exists()) return;
-
-        const remote = snap.data().data;
-        if (!remote) return;
-
-        this.syncing = true;
-        callback(remote);
-
-        setTimeout(() => {
-          this.syncing = false;
-        }, 1000);
-      }
-    );
-  }
-};
-
-window.addEventListener("DOMContentLoaded", () => {
-  onAuthStateChanged(auth, async (user) => {
-    const loginBtn = document.getElementById("google-login-btn");
-    const logoutBtn = document.getElementById("google-logout-btn");
-    const userBox = document.getElementById("user-profile-box");
-
-    if (user) {
-      window.firebaseSync.currentUser = user;
-
-      if (loginBtn) loginBtn.style.display = "none";
-      if (logoutBtn) logoutBtn.style.display = "inline-flex";
-
-      if (userBox) {
-        userBox.innerHTML = `
-          <img src="${user.photoURL}" style="width:26px;height:26px;border-radius:50%;">
-          <span style="font-size:12px;">${user.displayName}</span>
-          <span id="sync-status" style="font-size:11px;color:#34d399;">☁ Synced</span>
-        `;
-      }
-
-      const cloudData = await window.firebaseSync.loadData();
-
-      if (cloudData && typeof loadCloudData === "function") {
-        loadCloudData(cloudData);
-      }
-
-      window.firebaseSync.watchRealtime((remoteData) => {
-        if (typeof loadCloudData === "function") {
-          loadCloudData(remoteData, true);
-        }
-      });
-
-    } else {
-      window.firebaseSync.currentUser = null;
-
-      if (loginBtn) loginBtn.style.display = "inline-flex";
-      if (logoutBtn) logoutBtn.style.display = "none";
-
-      if (userBox) {
-        userBox.innerHTML = '<span style="font-size:12px;color:var(--text2);">Offline Mode</span>';
-      }
-    }
-  });
-});
-</script>
-
 <script>
 // ═══════════════════════════════════
 //  STATE
@@ -2535,22 +2529,147 @@ function load() {
 }
 
 // Persistent storage — survives refresh in Claude artifacts
-async function loadFromStorage() {
+// ════════════════════════════════════════════════════
+//  SUPABASE CONFIG  ← paste your values here
+// ════════════════════════════════════════════════════
+const SUPABASE_URL  = 'https://czjytskydvfxbtablzss.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6anl0c2t5ZHZmeGJ0YWJsenNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTUwNDIsImV4cCI6MjA5NDY5MTA0Mn0.lYvitM5alNp-tHqptgkbR1yx5Y9M7HDq8D0NSnpE9vM';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+let currentUser = null;
+
+// ── AUTH HELPERS ──────────────────────────────────────
+async function signInWithGoogle() {
+  showAuthLoading('Opening Google login...');
+  clearAuthError();
   try {
-    const result = await window.storage.get('opx_data');
-    if (result && result.value) {
-      const parsed = JSON.parse(result.value);
-      S = { ...DEF, ...parsed };
-      S.nofap    = { ...DEF.nofap,    ...S.nofap };
-      S.finance   = { ...DEF.finance,  ...S.finance };
-      S.earning   = { ...DEF.earning,  ...S.earning };
-      S.settings  = { ...DEF.settings, ...S.settings };
-    } else {
-      load(); // first time — try localStorage fallback
-    }
-  } catch(e) {
-    load(); // storage key not found yet
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.href }
+    });
+    if (error) throw error;
+  } catch(err) {
+    hideAuthLoading();
+    showAuthError('Sign-in failed: ' + (err.message || 'Unknown error'));
   }
+}
+
+async function signOutUser() {
+  closeUserDropdown();
+  try { await supabase.auth.signOut(); } catch(e) {}
+  currentUser = null;
+  document.getElementById('user-chip').classList.remove('visible');
+  showAuthOverlay();
+  toast('👋 Signed out successfully', 'success');
+}
+
+function showAuthOverlay() {
+  const el = document.getElementById('auth-overlay');
+  if (el) { el.style.display = 'flex'; el.classList.remove('hidden'); }
+}
+function hideAuthOverlay() {
+  const el = document.getElementById('auth-overlay');
+  if (!el) return;
+  el.classList.add('hidden');
+  setTimeout(() => { el.style.display = 'none'; }, 420);
+}
+function showAuthLoading(msg) {
+  document.getElementById('auth-main').style.display = 'none';
+  document.getElementById('auth-loading').classList.add('active');
+  if (msg) document.getElementById('auth-loading-text').textContent = msg;
+}
+function hideAuthLoading() {
+  document.getElementById('auth-main').style.display = '';
+  document.getElementById('auth-loading').classList.remove('active');
+}
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error'); if (el) el.textContent = msg;
+}
+function clearAuthError() {
+  const el = document.getElementById('auth-error'); if (el) el.textContent = '';
+}
+
+// ── USER CHIP ─────────────────────────────────────────
+function updateUserChip(user) {
+  const name  = user.user_metadata?.full_name || user.email?.split('@')[0] || 'OPX';
+  const email = user.email || '';
+  const photo = user.user_metadata?.avatar_url || '';
+  const init  = name.charAt(0).toUpperCase();
+  document.getElementById('user-chip').classList.add('visible');
+  document.getElementById('chip-name').textContent = name.split(' ')[0];
+  document.getElementById('dd-name').textContent   = name;
+  document.getElementById('dd-email').textContent  = email;
+  const pairs = [['chip-avatar','chip-avatar-fallback'],['dd-avatar','dd-avatar-fallback']];
+  pairs.forEach(([imgId, fbId]) => {
+    const img = document.getElementById(imgId);
+    const fb  = document.getElementById(fbId);
+    if (photo) { img.src = photo; img.style.display = 'block'; if (fb) fb.style.display = 'none'; }
+    else if (fb) { fb.textContent = init; }
+  });
+}
+
+function toggleUserDropdown() {
+  const dd = document.getElementById('user-dropdown');
+  dd.classList.toggle('open');
+  if (dd.classList.contains('open')) {
+    setTimeout(() => document.addEventListener('click', _outsideClick), 0);
+  }
+}
+function closeUserDropdown() {
+  document.getElementById('user-dropdown').classList.remove('open');
+  document.removeEventListener('click', _outsideClick);
+}
+function _outsideClick(e) {
+  if (!document.getElementById('user-chip').contains(e.target)) closeUserDropdown();
+}
+
+// ── SYNC DOT ─────────────────────────────────────────
+function setSyncDot(state) {
+  ['sync-dot','dd-sync-dot'].forEach(id => {
+    const d = document.getElementById(id); if (!d) return;
+    d.className = 'sync-dot';
+    if (state !== 'synced') d.classList.add(state);
+  });
+  const lbl = document.getElementById('dd-sync-label');
+  if (lbl) lbl.textContent = ({syncing:'Syncing...', synced:'Synced to cloud', offline:'Offline — local only', error:'Sync error'})[state] || state;
+}
+
+// ── LOAD DATA FROM SUPABASE ───────────────────────────
+async function loadFromStorage() {
+  // Step 1: instant load from localStorage
+  try {
+    const raw = localStorage.getItem('opx2');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      S = { ...DEF, ...parsed };
+      S.nofap   = { ...DEF.nofap,   ...S.nofap   };
+      S.finance  = { ...DEF.finance,  ...S.finance  };
+      S.earning  = { ...DEF.earning,  ...S.earning  };
+      S.settings = { ...DEF.settings, ...S.settings };
+    } else { S = { ...DEF }; }
+  } catch(e) { S = { ...DEF }; }
+
+  // Step 2: pull from Supabase if user is logged in
+  if (currentUser) {
+    try {
+      const { data, error } = await supabase
+        .from('lifeos_data')
+        .select('data')
+        .eq('user_id', currentUser.id)
+        .single();
+      if (!error && data?.data) {
+        const cloud = data.data;
+        S = { ...DEF, ...cloud };
+        S.nofap   = { ...DEF.nofap,   ...S.nofap   };
+        S.finance  = { ...DEF.finance,  ...S.finance  };
+        S.earning  = { ...DEF.earning,  ...S.earning  };
+        S.settings = { ...DEF.settings, ...S.settings };
+        try { localStorage.setItem('opx2', JSON.stringify(S)); } catch(e) {}
+      }
+    } catch(e) { /* no cloud data yet — that's fine, use defaults */ }
+  }
+
+  // Step 3: ensure arrays exist
   if (!Array.isArray(S.quests))  S.quests  = defaultQuests();
   if (!Array.isArray(S.habits))  S.habits  = defaultHabits();
   if (!Array.isArray(S.cars))    S.cars    = defaultCars();
@@ -2560,31 +2679,40 @@ async function loadFromStorage() {
   if (!S.nofap.start)            S.nofap.start = today();
 }
 
+// ── SAVE DATA TO SUPABASE ─────────────────────────────
 let _savePending = false;
-
 function save() {
-  if (window.firebaseSync && window.firebaseSync.currentUser) {
-    window.firebaseSync.saveData(S);
-  }
-
-  // Show saving indicator
   const ind = document.getElementById('save-indicator');
   const lbl = document.getElementById('save-label');
   if (ind) { ind.className = 'saving'; lbl.textContent = 'Saving...'; }
-  // Always write localStorage as instant backup
+  // Always instant-write to localStorage
   try { localStorage.setItem('opx2', JSON.stringify(S)); } catch(e) {}
-  // Debounced write to persistent artifact storage
+  // Debounced cloud sync
   if (!_savePending) {
     _savePending = true;
+    setSyncDot('syncing');
     setTimeout(async () => {
-      try {
-        await window.storage.set('opx_data', JSON.stringify(S));
-        if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Saved'; setTimeout(() => { ind.className = ''; }, 1500); }
-      } catch(e) {
-        if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Local'; setTimeout(() => { ind.className = ''; }, 1500); }
-      }
       _savePending = false;
-    }, 400);
+      if (!currentUser) {
+        setSyncDot('offline');
+        if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Local'; setTimeout(() => { ind.className = ''; }, 1500); }
+        return;
+      }
+      try {
+        const { error } = await supabase
+          .from('lifeos_data')
+          .upsert(
+            { user_id: currentUser.id, data: S, updated_at: new Date().toISOString() },
+            { onConflict: 'user_id' }
+          );
+        if (error) throw error;
+        setSyncDot('synced');
+        if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Synced'; setTimeout(() => { ind.className = ''; }, 1500); }
+      } catch(err) {
+        setSyncDot('error');
+        if (ind) { ind.className = 'saved'; lbl.textContent = '⚠ Sync error'; setTimeout(() => { ind.className = ''; }, 2500); }
+      }
+    }, 700);
   }
 }
 
@@ -5504,20 +5632,46 @@ function resetPasscode() {
 }
 
 // ═══════════════════════════════════
-//  INIT — async so storage loads before render
+//  INIT — Supabase auth-first boot
 // ═══════════════════════════════════
-(async () => {
-  await loadFromStorage();
+function bootApp() {
   loadSearchHistories();
   checkStreak();
   updateHUD();
   startClock();
   renderDashboard();
-  if(S.vacationMode){
+  if (S.vacationMode) {
     document.getElementById('vacation-banner').classList.add('active');
     document.getElementById('vacation-btn').classList.add('active');
-    document.getElementById('vacation-btn').textContent='☀️ End Vacation';
+    document.getElementById('vacation-btn').textContent = '☀️ End Vacation';
   }
+}
+
+(async () => {
+  // React to auth changes (handles OAuth redirect + session restore)
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+      currentUser = session.user;
+      updateUserChip(currentUser);
+      hideAuthOverlay();
+      await loadFromStorage();
+      bootApp();
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      document.getElementById('user-chip').classList.remove('visible');
+      showAuthOverlay();
+      hideAuthLoading();
+    }
+  });
+
+  // Check for existing session (page refresh / returning user)
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    // No active session — show login screen
+    showAuthOverlay();
+    hideAuthLoading();
+  }
+  // If session exists, onAuthStateChange fires INITIAL_SESSION → boots app automatically
 })();
 </script>
 </body>
