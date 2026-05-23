@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OPX LIFE OS</title>
 <!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -2534,28 +2534,39 @@ function load() {
 // ════════════════════════════════════════════════════
 const SUPABASE_URL  = 'https://czjytskydvfxbtablzss.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6anl0c2t5ZHZmeGJ0YWJsenNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTUwNDIsImV4cCI6MjA5NDY5MTA0Mn0.lYvitM5alNp-tHqptgkbR1yx5Y9M7HDq8D0NSnpE9vM';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+// Init Supabase — using window assignment to avoid const re-declaration conflicts
+var supabase = (function() {
+  var lib = window.supabase || window.Supabase;
+  if (!lib || !lib.createClient) {
+    console.error('[OPX] Supabase SDK not loaded!');
+    return null;
+  }
+  return lib.createClient(SUPABASE_URL, SUPABASE_ANON);
+})();
+if (!supabase) alert('Auth library failed to load. Please refresh the page.');
 
 let currentUser = null;
 
 // ── AUTH HELPERS ──────────────────────────────────────
 async function signInWithGoogle() {
-  showAuthLoading('Opening Google login...');
   clearAuthError();
+  showAuthLoading('Redirecting to Google...');
+  console.log('[OPX] signInWithGoogle — supabase:', !!supabase);
+  if (!supabase) { showAuthError('Auth not loaded. Please refresh.'); hideAuthLoading(); return; }
   try {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: 'https://opxlifeos.netlify.app',
-        queryParams: { access_type: 'offline', prompt: 'consent' }
+        queryParams: { access_type: 'offline', prompt: 'select_account' }
       }
     });
+    console.log('[OPX] OAuth result:', JSON.stringify(data), error?.message);
     if (error) throw error;
-    // Browser will redirect — nothing else runs here
   } catch(err) {
+    console.error('[OPX] OAuth error:', err);
     hideAuthLoading();
-    showAuthError('Sign-in failed: ' + (err.message || 'Unknown error'));
-    console.error('OAuth error:', err);
+    showAuthError('Error: ' + (err.message || 'Unknown. Open F12 console for details.'));
   }
 }
 
@@ -5653,21 +5664,15 @@ function bootApp() {
 }
 
 (async () => {
-  let booted = false;
-
-  // onAuthStateChange fires on: page load with existing session, OAuth redirect return, sign out
+  // React to auth changes (handles OAuth redirect + session restore)
   supabase.auth.onAuthStateChange(async (event, session) => {
-    console.log('[Auth]', event, session?.user?.email || 'no user');
-
-    if (session?.user && !booted) {
-      booted = true;
+    if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
       currentUser = session.user;
       updateUserChip(currentUser);
       hideAuthOverlay();
       await loadFromStorage();
       bootApp();
     } else if (event === 'SIGNED_OUT') {
-      booted = false;
       currentUser = null;
       document.getElementById('user-chip').classList.remove('visible');
       showAuthOverlay();
@@ -5675,19 +5680,14 @@ function bootApp() {
     }
   });
 
-  // Explicitly check session on load — catches returning users AND OAuth redirect callbacks
-  try {
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error) console.warn('[Auth] getSession error:', error.message);
-    if (!session && !booted) {
-      showAuthOverlay();
-      hideAuthLoading();
-    }
-  } catch(e) {
-    console.error('[Auth] init failed:', e);
+  // Check for existing session (page refresh / returning user)
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    // No active session — show login screen
     showAuthOverlay();
     hideAuthLoading();
   }
+  // If session exists, onAuthStateChange fires INITIAL_SESSION → boots app automatically
 })();
 </script>
 </body>
