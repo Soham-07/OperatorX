@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OPX LIFE OS</title>
 <!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -2534,23 +2534,48 @@ function load() {
 // ════════════════════════════════════════════════════
 const SUPABASE_URL  = 'https://czjytskydvfxbtablzss.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6anl0c2t5ZHZmeGJ0YWJsenNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTUwNDIsImV4cCI6MjA5NDY5MTA0Mn0.lYvitM5alNp-tHqptgkbR1yx5Y9M7HDq8D0NSnpE9vM';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+// Safe init using var — avoids "already declared" conflict with SDK UMD bundle
+var supabase = (window.supabase && window.supabase.createClient)
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+  : null;
+if (!supabase) {
+  console.error('[OPX] FATAL: Supabase SDK did not load.');
+  document.addEventListener('DOMContentLoaded', function() {
+    var e = document.getElementById('auth-error');
+    if (e) e.textContent = 'Network error: auth library failed to load. Please refresh.';
+    var l = document.getElementById('auth-loading');
+    if (l) l.style.display = 'none';
+    var m = document.getElementById('auth-main');
+    if (m) m.style.display = '';
+  });
+}
 
 let currentUser = null;
 
 // ── AUTH HELPERS ──────────────────────────────────────
 async function signInWithGoogle() {
-  showAuthLoading('Opening Google login...');
   clearAuthError();
+  if (!supabase) {
+    showAuthError('Auth library not loaded — please refresh the page.');
+    return;
+  }
+  showAuthLoading('Redirecting to Google...');
+  console.log('[OPX] signInWithGoogle called, supabase ready:', !!supabase);
   try {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.href }
+      options: {
+        redirectTo: 'https://opxlifeos.netlify.app',
+        queryParams: { access_type: 'offline', prompt: 'select_account' }
+      }
     });
+    console.log('[OPX] signInWithOAuth done — data:', data, 'error:', error);
     if (error) throw error;
+    // Page will redirect to Google — no more code runs here
   } catch(err) {
+    console.error('[OPX] OAuth error:', err);
     hideAuthLoading();
-    showAuthError('Sign-in failed: ' + (err.message || 'Unknown error'));
+    showAuthError('Error: ' + (err.message || 'Unknown error. Press F12 for details.'));
   }
 }
 
@@ -2636,42 +2661,32 @@ function setSyncDot(state) {
 
 // ── LOAD DATA FROM SUPABASE ───────────────────────────
 async function loadFromStorage() {
-  // ── CLOUD IS ALWAYS SOURCE OF TRUTH ──────────────────────────────────────
-  // Strategy: try cloud first (always). On fail, fall back to localStorage.
-  // Never render stale localStorage while waiting for cloud.
-
   let cloudLoaded = false;
-
-  if (currentUser) {
+  // ── Step 1: try cloud first (source of truth) ──────────────────────────────
+  if (currentUser && supabase) {
     try {
       const { data, error } = await supabase
         .from('lifeos_data')
         .select('data')
         .eq('user_id', currentUser.id)
-        .maybeSingle();                          // maybeSingle = no error if row missing
-      if (!error && data?.data) {
-        const cloud = data.data;
-        S = { ...DEF, ...cloud };
+        .maybeSingle();
+      if (!error && data && data.data) {
+        S = { ...DEF, ...data.data };
         S.nofap    = { ...DEF.nofap,    ...S.nofap    };
         S.finance   = { ...DEF.finance,   ...S.finance   };
         S.earning   = { ...DEF.earning,   ...S.earning   };
         S.settings  = { ...DEF.settings,  ...S.settings  };
-        S.customCategories = { ...DEF.customCategories, ...(S.customCategories || {}) };
-        // Write cloud data to localStorage so offline works after first load
         try { localStorage.setItem('opx2', JSON.stringify(S)); } catch(e) {}
         cloudLoaded = true;
-        console.log('[OPX] Loaded from cloud ✅');
+        console.log('[OPX] Cloud load ✅');
       } else if (error) {
         console.warn('[OPX] Cloud load error:', error.message);
       } else {
-        console.log('[OPX] No cloud row yet — using localStorage or defaults');
+        console.log('[OPX] No cloud row yet');
       }
-    } catch(e) {
-      console.warn('[OPX] Cloud fetch threw:', e.message);
-    }
+    } catch(e) { console.warn('[OPX] Cloud fetch error:', e.message); }
   }
-
-  // Only use localStorage if cloud had nothing
+  // ── Step 2: fall back to localStorage only if cloud had nothing ────────────
   if (!cloudLoaded) {
     try {
       const raw = localStorage.getItem('opx2');
@@ -2682,70 +2697,59 @@ async function loadFromStorage() {
         S.finance   = { ...DEF.finance,   ...S.finance   };
         S.earning   = { ...DEF.earning,   ...S.earning   };
         S.settings  = { ...DEF.settings,  ...S.settings  };
-        S.customCategories = { ...DEF.customCategories, ...(S.customCategories || {}) };
-        console.log('[OPX] Loaded from localStorage ✅');
-        // Push local data up to cloud so other devices get it
-        if (currentUser) _pushToCloud();
+        console.log('[OPX] Local load ✅ — pushing to cloud');
+        if (currentUser && supabase) _pushToCloud();
       } else {
         S = { ...DEF };
-        console.log('[OPX] No data anywhere — using defaults');
+        console.log('[OPX] Fresh start — no data anywhere');
       }
     } catch(e) { S = { ...DEF }; }
   }
-
-  // Ensure arrays always exist
-  if (!Array.isArray(S.quests))  S.quests  = defaultQuests();
-  if (!Array.isArray(S.habits))  S.habits  = defaultHabits();
-  if (!Array.isArray(S.cars))    S.cars    = defaultCars();
-  if (!Array.isArray(S.books))   S.books   = defaultBooks();
-  if (!Array.isArray(S.goals))   S.goals   = defaultGoals();
-  if (!Array.isArray(S.rewards)) S.rewards = defaultRewards();
-  if (!Array.isArray(S.movies))  S.movies  = [];
-  if (!Array.isArray(S.music))   S.music   = [];
-  if (!Array.isArray(S.tech))    S.tech    = [];
+  // ── Step 3: ensure arrays always exist ────────────────────────────────────
+  if (!Array.isArray(S.quests))   S.quests   = defaultQuests();
+  if (!Array.isArray(S.habits))   S.habits   = defaultHabits();
+  if (!Array.isArray(S.cars))     S.cars     = defaultCars();
+  if (!Array.isArray(S.books))    S.books    = defaultBooks();
+  if (!Array.isArray(S.goals))    S.goals    = defaultGoals();
+  if (!Array.isArray(S.rewards))  S.rewards  = defaultRewards();
+  if (!Array.isArray(S.movies))   S.movies   = [];
+  if (!Array.isArray(S.music))    S.music    = [];
+  if (!Array.isArray(S.tech))     S.tech     = [];
   if (!Array.isArray(S.routines)) S.routines = [];
   if (!S.nofap.start) S.nofap.start = today();
 }
 
-// Push local data to cloud (used when device has local data but no cloud row yet)
 async function _pushToCloud() {
-  if (!currentUser || !S) return;
+  if (!currentUser || !supabase || !S) return;
   try {
     await supabase.from('lifeos_data').upsert(
       { user_id: currentUser.id, data: S, updated_at: new Date().toISOString() },
       { onConflict: 'user_id' }
     );
-    console.log('[OPX] Pushed local data to cloud');
+    console.log('[OPX] Pushed local → cloud ✅');
   } catch(e) { console.warn('[OPX] Push failed:', e.message); }
 }
 
-// ── SAVE DATA TO SUPABASE ────────────────────────────────────────────────────
+// ── SAVE DATA TO SUPABASE ─────────────────────────────
 let _saveTimer = null;
 function save() {
-  // 1. Instant localStorage write (offline safety net)
   try { localStorage.setItem('opx2', JSON.stringify(S)); } catch(e) {}
-
-  // 2. Show saving indicator
   const ind = document.getElementById('save-indicator');
   const lbl = document.getElementById('save-label');
   if (ind) { ind.className = 'saving'; lbl.textContent = 'Saving...'; }
   setSyncDot('syncing');
-
-  // 3. Debounced cloud write — waits 800ms after last save() call
   clearTimeout(_saveTimer);
   _saveTimer = setTimeout(async () => {
-    if (!currentUser) {
+    if (!currentUser || !supabase) {
       setSyncDot('offline');
       if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Local only'; setTimeout(() => { ind.className = ''; }, 1500); }
       return;
     }
     try {
-      const { error } = await supabase
-        .from('lifeos_data')
-        .upsert(
-          { user_id: currentUser.id, data: S, updated_at: new Date().toISOString() },
-          { onConflict: 'user_id' }
-        );
+      const { error } = await supabase.from('lifeos_data').upsert(
+        { user_id: currentUser.id, data: S, updated_at: new Date().toISOString() },
+        { onConflict: 'user_id' }
+      );
       if (error) throw error;
       setSyncDot('synced');
       if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Synced'; setTimeout(() => { ind.className = ''; }, 1500); }
@@ -3848,17 +3852,7 @@ function renderSettings(){
   document.getElementById('set-wt').value   = S.settings.weight || 105;
   document.getElementById('set-gwt').value  = S.settings.goalWeight || 80;
 }
-async function confirmReset() {
-  if (!confirm('Delete EVERYTHING and start fresh? This cannot be undone!')) return;
-  localStorage.removeItem('opx2');
-  if (currentUser && supabase) {
-    try {
-      await supabase.from('lifeos_data').delete().eq('user_id', currentUser.id);
-      console.log('[OPX] Cloud data deleted');
-    } catch(e) { console.warn('[OPX] Cloud delete failed:', e.message); }
-  }
-  location.reload();
-}
+function confirmReset(){if(confirm('Delete EVERYTHING? Cannot undo!')){localStorage.removeItem('opx2');try{window.storage.delete('opx_data');}catch(e){}location.reload();}}
 function exportData(){
   const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
@@ -5699,60 +5693,48 @@ function bootApp() {
 }
 
 (async () => {
+  if (!supabase) { showAuthOverlay(); hideAuthLoading(); return; }
+
   let booted = false;
 
-  // Show a loading state in the auth overlay while we check session
-  showAuthLoading('Loading your data...');
-
   supabase.auth.onAuthStateChange(async (event, session) => {
-    console.log('[OPX] Auth:', event, session?.user?.email || 'none');
+    console.log('[OPX] Auth event:', event, session?.user?.email || 'none');
 
     if (session?.user && !booted) {
+      // First login or page load with existing session
       booted = true;
       currentUser = session.user;
       updateUserChip(currentUser);
-      showAuthLoading('Syncing data...');
-      await loadFromStorage();  // ALWAYS waits for cloud before rendering
+      showAuthLoading('Syncing your data...');
+      await loadFromStorage();   // always waits for cloud before rendering
       hideAuthOverlay();
       bootApp();
 
     } else if (event === 'TOKEN_REFRESHED' && session?.user && booted) {
-      // Token refreshed (tab came back into focus) — re-sync data silently
+      // Tab came back into focus — re-sync from cloud silently
       console.log('[OPX] Token refreshed — re-syncing');
       currentUser = session.user;
-      const prevPts = S.points;
+      const snap = S.points;
       await loadFromStorage();
-      if (S.points !== prevPts) {
-        // Data changed on another device — re-render
-        updateHUD();
-        renderDashboard();
-        toast('🔄 Data synced from another device', 'success');
-      }
+      if (S.points !== snap) { updateHUD(); renderDashboard(); toast('🔄 Synced from another device','success'); }
 
     } else if (event === 'SIGNED_OUT') {
       booted = false;
       currentUser = null;
-      const chip = document.getElementById('user-chip');
+      var chip = document.getElementById('user-chip');
       if (chip) chip.classList.remove('visible');
       showAuthOverlay();
       hideAuthLoading();
     }
   });
 
-  // Check for session immediately on page load
   try {
     const { data: { session }, error } = await supabase.auth.getSession();
-    if (error) console.warn('[OPX] getSession error:', error.message);
-    if (!session) {
-      // No session — show login screen
-      showAuthOverlay();
-      hideAuthLoading();
-    }
-    // If session exists → onAuthStateChange fires INITIAL_SESSION → boots
+    console.log('[OPX] Initial session:', session?.user?.email || 'none', error?.message || '');
+    if (!session && !booted) { showAuthOverlay(); hideAuthLoading(); }
   } catch(e) {
     console.error('[OPX] Init error:', e);
-    showAuthOverlay();
-    hideAuthLoading();
+    showAuthOverlay(); hideAuthLoading();
   }
 })();
 </script>
