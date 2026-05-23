@@ -6,14 +6,6 @@
 <title>OPX LIFE OS</title>
 <!-- Supabase SDK -->
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-document.addEventListener('DOMContentLoaded', function() {
-  const googleBtn = document.getElementById('google-signin-btn');
-  if (googleBtn) {
-    googleBtn.addEventListener('click', signInWithGoogle);
-  }
-});
-
-</script>
 <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1124,7 +1116,7 @@ textarea.inp { resize: vertical; min-height: 80px; line-height: 1.5; }
     <div class="auth-title">OPX LIFE OS</div>
     <div class="auth-sub">Your personal life operating system.<br>Sign in to sync data across all your devices.</div>
     <div id="auth-main">
-      <button class="google-btn" id="google-signin-btn">
+      <button class="google-btn" onclick="signInWithGoogle()">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
           <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -2540,13 +2532,13 @@ function load() {
 // ════════════════════════════════════════════════════
 //  SUPABASE CONFIG  ← paste your values here
 // ════════════════════════════════════════════════════
-const SUPABASE_URL  = 'https://czjytskydvfxbtablzss.supabaseClient.co';
+const SUPABASE_URL  = 'https://czjytskydvfxbtablzss.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6anl0c2t5ZHZmeGJ0YWJsenNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTUwNDIsImV4cCI6MjA5NDY5MTA0Mn0.lYvitM5alNp-tHqptgkbR1yx5Y9M7HDq8D0NSnpE9vM';
 // Safe init using var — avoids "already declared" conflict with SDK UMD bundle
-let supabaseClient = (window.supabase && window.supabase.createClient)
+var supabase = (window.supabase && window.supabase.createClient)
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
   : null;
-if (!supabaseClient) {
+if (!supabase) {
   console.error('[OPX] FATAL: Supabase SDK did not load.');
   document.addEventListener('DOMContentLoaded', function() {
     var e = document.getElementById('auth-error');
@@ -2563,14 +2555,14 @@ let currentUser = null;
 // ── AUTH HELPERS ──────────────────────────────────────
 async function signInWithGoogle() {
   clearAuthError();
-  if (!supabaseClient) {
+  if (!supabase) {
     showAuthError('Auth library not loaded — please refresh the page.');
     return;
   }
   showAuthLoading('Redirecting to Google...');
-  console.log('[OPX] signInWithGoogle called, supabaseClient ready:', !!supabaseClient);
+  console.log('[OPX] signInWithGoogle called, supabase ready:', !!supabase);
   try {
-    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: 'https://opxlifeos.netlify.app',
@@ -2589,7 +2581,7 @@ async function signInWithGoogle() {
 
 async function signOutUser() {
   closeUserDropdown();
-  try { await supabaseClient.auth.signOut(); } catch(e) {}
+  try { await supabase.auth.signOut(); } catch(e) {}
   currentUser = null;
   document.getElementById('user-chip').classList.remove('visible');
   showAuthOverlay();
@@ -2671,9 +2663,9 @@ function setSyncDot(state) {
 async function loadFromStorage() {
   let cloudLoaded = false;
   // ── Step 1: try cloud first (source of truth) ──────────────────────────────
-  if (currentUser && supabaseClient) {
+  if (currentUser && supabase) {
     try {
-      const { data, error } = await supabaseClient
+      const { data, error } = await supabase
         .from('lifeos_data')
         .select('data')
         .eq('user_id', currentUser.id)
@@ -2706,7 +2698,7 @@ async function loadFromStorage() {
         S.earning   = { ...DEF.earning,   ...S.earning   };
         S.settings  = { ...DEF.settings,  ...S.settings  };
         console.log('[OPX] Local load ✅ — pushing to cloud');
-        if (currentUser && supabaseClient) _pushToCloud();
+        if (currentUser && supabase) _pushToCloud();
       } else {
         S = { ...DEF };
         console.log('[OPX] Fresh start — no data anywhere');
@@ -2728,9 +2720,9 @@ async function loadFromStorage() {
 }
 
 async function _pushToCloud() {
-  if (!currentUser || !supabaseClient || !S) return;
+  if (!currentUser || !supabase || !S) return;
   try {
-    await supabaseClient.from('lifeos_data').upsert(
+    await supabase.from('lifeos_data').upsert(
       { user_id: currentUser.id, data: S, updated_at: new Date().toISOString() },
       { onConflict: 'user_id' }
     );
@@ -2748,13 +2740,13 @@ function save() {
   setSyncDot('syncing');
   clearTimeout(_saveTimer);
   _saveTimer = setTimeout(async () => {
-    if (!currentUser || !supabaseClient) {
+    if (!currentUser || !supabase) {
       setSyncDot('offline');
       if (ind) { ind.className = 'saved'; lbl.textContent = '✓ Local only'; setTimeout(() => { ind.className = ''; }, 1500); }
       return;
     }
     try {
-      const { error } = await supabaseClient.from('lifeos_data').upsert(
+      const { error } = await supabase.from('lifeos_data').upsert(
         { user_id: currentUser.id, data: S, updated_at: new Date().toISOString() },
         { onConflict: 'user_id' }
       );
@@ -5701,11 +5693,11 @@ function bootApp() {
 }
 
 (async () => {
-  if (!supabaseClient) { showAuthOverlay(); hideAuthLoading(); return; }
+  if (!supabase) { showAuthOverlay(); hideAuthLoading(); return; }
 
   let booted = false;
 
-  supabaseClient.auth.onAuthStateChange(async (event, session) => {
+  supabase.auth.onAuthStateChange(async (event, session) => {
     console.log('[OPX] Auth event:', event, session?.user?.email || 'none');
 
     if (session?.user && !booted) {
@@ -5737,7 +5729,7 @@ function bootApp() {
   });
 
   try {
-    const { data: { session }, error } = await supabaseClient.auth.getSession();
+    const { data: { session }, error } = await supabase.auth.getSession();
     console.log('[OPX] Initial session:', session?.user?.email || 'none', error?.message || '');
     if (!session && !booted) { showAuthOverlay(); hideAuthLoading(); }
   } catch(e) {
