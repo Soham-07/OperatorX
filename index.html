@@ -2545,12 +2545,17 @@ async function signInWithGoogle() {
   try {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.href }
+      options: {
+        redirectTo: 'https://opxlifeos.netlify.app',
+        queryParams: { access_type: 'offline', prompt: 'consent' }
+      }
     });
     if (error) throw error;
+    // Browser will redirect — nothing else runs here
   } catch(err) {
     hideAuthLoading();
     showAuthError('Sign-in failed: ' + (err.message || 'Unknown error'));
+    console.error('OAuth error:', err);
   }
 }
 
@@ -5648,15 +5653,21 @@ function bootApp() {
 }
 
 (async () => {
-  // React to auth changes (handles OAuth redirect + session restore)
+  let booted = false;
+
+  // onAuthStateChange fires on: page load with existing session, OAuth redirect return, sign out
   supabase.auth.onAuthStateChange(async (event, session) => {
-    if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+    console.log('[Auth]', event, session?.user?.email || 'no user');
+
+    if (session?.user && !booted) {
+      booted = true;
       currentUser = session.user;
       updateUserChip(currentUser);
       hideAuthOverlay();
       await loadFromStorage();
       bootApp();
     } else if (event === 'SIGNED_OUT') {
+      booted = false;
       currentUser = null;
       document.getElementById('user-chip').classList.remove('visible');
       showAuthOverlay();
@@ -5664,14 +5675,19 @@ function bootApp() {
     }
   });
 
-  // Check for existing session (page refresh / returning user)
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
-    // No active session — show login screen
+  // Explicitly check session on load — catches returning users AND OAuth redirect callbacks
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (error) console.warn('[Auth] getSession error:', error.message);
+    if (!session && !booted) {
+      showAuthOverlay();
+      hideAuthLoading();
+    }
+  } catch(e) {
+    console.error('[Auth] init failed:', e);
     showAuthOverlay();
     hideAuthLoading();
   }
-  // If session exists, onAuthStateChange fires INITIAL_SESSION → boots app automatically
 })();
 </script>
 </body>
