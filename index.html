@@ -2542,7 +2542,6 @@ let currentUser = null;
 async function signInWithGoogle() {
   clearAuthError();
   showAuthLoading('Redirecting to Google...');
-  console.log('[OPX] signInWithGoogle called');
   try {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -2551,10 +2550,8 @@ async function signInWithGoogle() {
         queryParams: { access_type: 'offline', prompt: 'select_account' }
       }
     });
-    console.log('[OPX] OAuth result:', data, error);
     if (error) throw error;
   } catch(err) {
-    console.error('[OPX] OAuth error:', err);
     hideAuthLoading();
     showAuthError('Error: ' + (err.message || 'Unknown. Press F12 for details.'));
   }
@@ -2641,15 +2638,28 @@ function setSyncDot(state) {
 }
 
 // ── LOAD DATA FROM SUPABASE ───────────────────────────
+// Timeout wrapper — if cloud takes too long, resolve with null
+function _withTimeout(promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise(resolve => setTimeout(() => resolve(null), ms))
+  ]);
+}
+
 async function loadFromStorage() {
   let cloudLoaded = false;
+
   if (currentUser) {
     try {
-      const { data, error } = await supabase
-        .from('lifeos_data').select('data')
-        .eq('user_id', currentUser.id).maybeSingle();
-      if (!error && data && data.data) {
-        S = { ...DEF, ...data.data };
+      // 6 second timeout — if Supabase hangs, we fall through to localStorage
+      const result = await _withTimeout(
+        supabase.from('lifeos_data').select('data').eq('user_id', currentUser.id).maybeSingle(),
+        6000
+      );
+      if (result === null) {
+        console.warn('[OPX] Cloud load timed out — using localStorage');
+      } else if (!result.error && result.data && result.data.data) {
+        S = { ...DEF, ...result.data.data };
         S.nofap    = { ...DEF.nofap,    ...S.nofap    };
         S.finance   = { ...DEF.finance,   ...S.finance   };
         S.earning   = { ...DEF.earning,   ...S.earning   };
@@ -2658,10 +2668,11 @@ async function loadFromStorage() {
         cloudLoaded = true;
         console.log('[OPX] Cloud load ✅');
       } else {
-        console.log('[OPX] No cloud row yet. Error:', error?.message);
+        console.log('[OPX] No cloud row yet. Error:', result.error?.message);
       }
-    } catch(e) { console.warn('[OPX] Cloud fetch threw:', e.message); }
+    } catch(e) { console.warn('[OPX] Cloud fetch error:', e.message); }
   }
+
   if (!cloudLoaded) {
     try {
       const raw = localStorage.getItem('opx2');
@@ -2674,9 +2685,13 @@ async function loadFromStorage() {
         S.settings  = { ...DEF.settings,  ...S.settings  };
         console.log('[OPX] Local load ✅');
         if (currentUser) _pushToCloud();
-      } else { S = { ...DEF }; console.log('[OPX] Fresh start'); }
+      } else {
+        S = { ...DEF };
+        console.log('[OPX] Fresh start — no data anywhere');
+      }
     } catch(e) { S = { ...DEF }; }
   }
+
   if (!Array.isArray(S.quests))  S.quests  = defaultQuests();
   if (!Array.isArray(S.habits))  S.habits  = defaultHabits();
   if (!Array.isArray(S.cars))    S.cars    = defaultCars();
@@ -2685,6 +2700,7 @@ async function loadFromStorage() {
   if (!Array.isArray(S.rewards)) S.rewards = defaultRewards();
   if (!S.nofap.start) S.nofap.start = today();
 }
+
 async function _pushToCloud() {
   if (!currentUser || !S) return;
   try {
@@ -5662,17 +5678,33 @@ function bootApp() {
   let booted = false;
 
   async function doBootWithUser(user) {
+    if (booted) return;
     booted = true;
     currentUser = user;
     updateUserChip(user);
     showAuthLoading('Syncing your data...');
-    await loadFromStorage();
-    hideAuthOverlay();
-    bootApp();
+    // Safety net: if entire boot takes > 10s, force show app anyway
+    const bootTimeout = setTimeout(() => {
+      console.warn('[OPX] Boot timeout — forcing app open');
+      if (!S || S === DEF) { try { const r = localStorage.getItem('opx2'); if(r) { const p=JSON.parse(r); S={...DEF,...p}; } } catch(e){} }
+      hideAuthOverlay();
+      bootApp();
+    }, 10000);
+    try {
+      await loadFromStorage();
+      clearTimeout(bootTimeout);
+      hideAuthOverlay();
+      bootApp();
+    } catch(e) {
+      clearTimeout(bootTimeout);
+      console.error('[OPX] Boot error:', e);
+      hideAuthOverlay();
+      bootApp();
+    }
   }
 
   supabase.auth.onAuthStateChange(async (event, session) => {
-    console.log('[OPX] Auth event:', event, session?.user?.email || 'none');
+    console.log('[OPX] Auth:', event, session?.user?.email || 'none');
     if (session?.user && !booted) {
       await doBootWithUser(session.user);
     } else if (event === 'TOKEN_REFRESHED' && session?.user && booted) {
@@ -5690,11 +5722,9 @@ function bootApp() {
     }
   });
 
-  // getSession fires BEFORE onAuthStateChange on page load
-  // If session exists here, boot immediately without waiting for the event
   try {
     const { data: { session } } = await supabase.auth.getSession();
-    console.log('[OPX] getSession:', session?.user?.email || 'none');
+    console.log('[OPX] Initial session:', session?.user?.email || 'none');
     if (session?.user && !booted) {
       await doBootWithUser(session.user);
     } else if (!session) {
@@ -5702,7 +5732,7 @@ function bootApp() {
       hideAuthLoading();
     }
   } catch(e) {
-    console.error('[OPX] getSession error:', e);
+    console.error('[OPX] Init error:', e);
     showAuthOverlay();
     hideAuthLoading();
   }
