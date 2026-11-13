@@ -1,0 +1,30 @@
+{
+  "settings": {
+    "name": "Sharma Hardware & Tools",
+    "tag": "Tools • Fittings • Finishes",
+    "phone": "919876543210",
+    "email": "sales@sharmahardware.com",
+    "address": "Shop 12, Main Market, Industrial Area, Your City — 000000",
+    "password": "admin@0003",
+    "templates": {
+      "product": "Hello {business}, I'm interested in {product} ({price}). Please share details.",
+      "contact": "Hello {business}, my name is {name}. Phone: {phone}. Requirement: {message}"
+    }
+  },
+  "categories": [
+    { "id": "c1", "name": "Power Tools" },
+    { "id": "c2", "name": "Hand Tools" },
+    { "id": "c3", "name": "Fittings" },
+    { "id": "c4", "name": "Paint & Finishes" }
+  ],
+  "products": [
+    { "id": "p1", "name": "Impact Drill 13mm", "category": "Power Tools", "price": 3450, "unit": "pc", "sizes": ["13mm","16mm"], "desc": "Variable speed impact drill with 750W motor, ideal for masonry and steel.", "image": "", "published": true },
+    { "id": "p2", "name": "Angle Grinder 4\"", "category": "Power Tools", "price": 2290, "unit": "pc", "sizes": ["4 inch","5 inch"], "desc": "850W heavy-duty angle grinder with overload protection.", "image": "", "published": true },
+    { "id": "p3", "name": "Adjustable Wrench Set", "category": "Hand Tools", "price": 890, "unit": "set", "sizes": ["8\"","10\"","12\""], "desc": "Chrome vanadium steel adjustable wrenches. Set of 3.", "image": "", "published": true },
+    { "id": "p4", "name": "Screwdriver Kit (12 pc)", "category": "Hand Tools", "price": 640, "unit": "set", "sizes": ["Flat","Phillips","Torx"], "desc": "Magnetic-tip screwdrivers with ergonomic grips.", "image": "", "published": true },
+    { "id": "p5", "name": "Stainless Steel Hinge", "category": "Fittings", "price": 145, "unit": "pc", "sizes": ["3 inch","4 inch","5 inch"], "desc": "SS-304 butt hinge, rust resistant.", "image": "", "published": true },
+    { "id": "p6", "name": "Concealed Door Handle", "category": "Fittings", "price": 420, "unit": "pc", "sizes": ["Matte","Chrome","Gold"], "desc": "Premium zinc-alloy concealed handle with satin finish.", "image": "", "published": true },
+    { "id": "p7", "name": "Wall Emulsion Paint 20L", "category": "Paint & Finishes", "price": 4850, "unit": "bucket", "sizes": ["20L","10L","4L"], "desc": "Low-VOC washable interior emulsion.", "image": "", "published": true },
+    { "id": "p8", "name": "Wood Varnish Gloss 4L", "category": "Paint & Finishes", "price": 1250, "unit": "can", "sizes": ["1L","4L"], "desc": "Fast-drying polyurethane varnish for wood.", "image": "", "published": true }
+  ]
+}
