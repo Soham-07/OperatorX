@@ -2,1329 +2,1127 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101713">
-<meta name="description" content="Real Vaastu — Vaastu and Astrology Consultancy by Dr. Sukesh Tretiya and Hardik Tretiya. Offices in Rajkot and Panvel.">
-<title>Real Vaastu | Vaastu & Astrology Consultancy</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0c">
+<title>Hardware Catalogue — Premium Tools & Fittings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #101713;
-  --bg2: #151d18;
-  --card: #1a241e;
-  --card2: #222e25;
-  --silver: #c3c7ce;
-  --silver-light: #eceef2;
-  --text: #f4f5f8;
-  --muted: #b7bcc5;
-  --green: #20b85a;
-  --border: rgba(195,199,206,.24);
-  --radius: 20px;
-  --shadow: 0 15px 45px rgba(0,0,0,.23);
+:root{
+  --bg:#0a0a0c; --bg-2:#0f0f13; --surface:#141419; --surface-2:#1b1b22; --surface-3:#232329;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --gold:#c9a227; --gold-2:#e8c96a; --gold-soft:rgba(201,162,39,.12);
+  --text:#f3f3f5; --muted:#9a9aa6; --muted-2:#6e6e7a;
+  --ok:#3fbf7f; --danger:#e5544b;
+  --radius:18px; --radius-sm:12px;
+  --shadow:0 24px 60px -20px rgba(0,0,0,.8);
+  --ease:cubic-bezier(.22,1,.36,1); --ease-out:cubic-bezier(.16,1,.3,1);
 }
-
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 90px; }
-body {
-  margin: 0;
-  background:
-    radial-gradient(ellipse at 50% -10%, #293629 0%, transparent 48%),
-    var(--bg);
-  color: var(--text);
-  font-family: "Segoe UI", Arial, sans-serif;
-  line-height: 1.6;
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:none;cursor:pointer}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:#000}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#2a2a33;border-radius:20px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:#3a3a45}
+.wrap{width:min(1220px,92vw);margin-inline:auto}
+.hidden{display:none !important}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.eyebrow{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.sec-head{max-width:620px;margin-bottom:38px}
+.sec-head h2{font-size:clamp(28px,4.4vw,44px);margin-bottom:12px}
+.sec-head p{color:var(--muted);font-size:15.5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 26px;border-radius:100px;font-size:14px;font-weight:600;letter-spacing:.01em;cursor:pointer;position:relative;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .3s,border-color .3s,color .3s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#141005;box-shadow:0 10px 30px -10px rgba(201,162,39,.6)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 18px 40px -12px rgba(201,162,39,.75)}
+.btn-gold::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.55) 50%,transparent 75%);transform:translateX(-120%);transition:transform .8s var(--ease)}
+.btn-gold:hover::after{transform:translateX(120%)}
+.btn-outline{border:1px solid var(--line-2);color:var(--text);background:rgba(255,255,255,.02)}
+.btn-outline:hover{background:rgba(255,255,255,.07);border-color:var(--gold);color:var(--gold-2);transform:translateY(-2px)}
+.btn-sm{padding:9px 18px;font-size:13px}
+.btn-block{width:100%}
+.hdr{position:fixed;inset:0 0 auto 0;z-index:200;transition:background .4s var(--ease),backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent}
+.hdr.scrolled{background:rgba(10,10,12,.82);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border-bottom-color:var(--line)}
+.hdr-in{width:min(1220px,92vw);margin-inline:auto;height:74px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.brand-mark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#161005;font-size:16px;box-shadow:0 8px 24px -8px rgba(201,162,39,.7);transition:transform .5s var(--ease)}
+.brand:hover .brand-mark{transform:rotate(45deg) scale(1.06)}
+.brand-txt{display:flex;flex-direction:column;line-height:1.15}
+.brand-txt b{font-size:15px;font-weight:600;letter-spacing:.02em}
+.brand-txt i{font-style:normal;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2)}
+.nav{display:flex;align-items:center;gap:6px}
+.nav-link{padding:9px 15px;border-radius:100px;font-size:13.5px;font-weight:500;color:var(--muted);transition:color .3s,background .3s;position:relative}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-link.active{color:var(--gold-2)}
+.hamburger{display:none;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);flex-direction:column;gap:5px;align-items:center;justify-content:center}
+.hamburger span{width:18px;height:1.6px;background:var(--text);border-radius:2px;transition:transform .4s var(--ease),opacity .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6.6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.6px) rotate(-45deg)}
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:130px 0 90px;overflow:hidden;isolation:isolate}
+.hero::before{content:'';position:absolute;inset:0;z-index:-2;background:radial-gradient(1000px 600px at 78% 12%,rgba(201,162,39,.10),transparent 62%),radial-gradient(800px 500px at 12% 88%,rgba(90,110,220,.07),transparent 65%),linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
+.hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:76px 76px;mask-image:radial-gradient(circle at 50% 42%,#000 0%,transparent 72%);-webkit-mask-image:radial-gradient(circle at 50% 42%,#000 0%,transparent 72%);opacity:.5}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35;z-index:-1;pointer-events:none}
+.orb-1{width:460px;height:460px;background:rgba(201,162,39,.32);top:-140px;right:-100px;animation:float1 16s ease-in-out infinite}
+.orb-2{width:380px;height:380px;background:rgba(70,90,200,.22);bottom:-120px;left:-100px;animation:float2 20s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,50px) scale(1.12)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-40px) scale(1.1)}}
+.hero-in{width:min(1220px,92vw);margin-inline:auto;max-width:820px}
+.hero .eyebrow{opacity:0;animation:riseIn .9s var(--ease-out) .1s forwards}
+.hero-title{font-size:clamp(38px,7.2vw,74px);line-height:1.06;margin-bottom:22px;letter-spacing:-.025em;opacity:0;animation:riseIn 1s var(--ease-out) .22s forwards}
+.hero-title em{font-style:italic;color:var(--gold-2);position:relative}
+.hero-sub{font-size:clamp(15px,1.8vw,17.5px);color:var(--muted);max-width:560px;margin-bottom:34px;opacity:0;animation:riseIn 1s var(--ease-out) .36s forwards}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:riseIn 1s var(--ease-out) .5s forwards}
+.hero-stats{display:flex;gap:44px;margin-top:64px;padding-top:30px;border-top:1px solid var(--line);opacity:0;animation:riseIn 1s var(--ease-out) .64s forwards;flex-wrap:wrap}
+.hero-stats div{display:flex;flex-direction:column;gap:2px}
+.hero-stats b{font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--gold-2);line-height:1}
+.hero-stats span{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2)}
+@keyframes riseIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.section{padding:96px 0;scroll-margin-top:90px;position:relative}
+.section.alt{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.toolbar{display:flex;flex-direction:column;gap:18px;margin-bottom:34px}
+.search{position:relative;max-width:420px;width:100%}
+.search input{width:100%;padding:14px 18px 14px 46px;border-radius:100px;background:var(--surface);border:1px solid var(--line);color:var(--text);font-size:14px;outline:none;transition:border-color .3s,box-shadow .3s,background .3s}
+.search input::placeholder{color:var(--muted-2)}
+.search input:focus{border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft);background:var(--surface-2)}
+.search svg{position:absolute;left:17px;top:50%;transform:translateY(-50%);color:var(--muted-2);pointer-events:none}
+.chips{display:flex;gap:9px;flex-wrap:wrap}
+.chip{padding:9px 18px;border-radius:100px;font-size:13px;font-weight:500;background:var(--surface);border:1px solid var(--line);color:var(--muted);transition:all .35s var(--ease);white-space:nowrap}
+.chip:hover{border-color:var(--line-2);color:var(--text);transform:translateY(-1px)}
+.chip.active{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#141005;border-color:transparent;font-weight:600;box-shadow:0 8px 22px -10px rgba(201,162,39,.8)}
+.grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .5s var(--ease),border-color .4s,box-shadow .5s var(--ease);position:relative;cursor:pointer}
+.card:hover{transform:translateY(-7px);border-color:rgba(201,162,39,.42);box-shadow:0 30px 60px -26px rgba(0,0,0,.95),0 0 0 1px rgba(201,162,39,.12)}
+.card-img{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--surface-2)}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .5s}
+.card:hover .card-img img{transform:scale(1.07)}
+.badge{position:absolute;top:12px;left:12px;padding:5px 12px;border-radius:100px;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:rgba(10,10,12,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:var(--gold-2)}
+.card-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card-body h3{font-size:17px;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:-.01em;line-height:1.35}
+.card-desc{font-size:12.8px;color:var(--muted-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.55}
+.sizes{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.size-tag{font-size:10.5px;padding:3px 9px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted);letter-spacing:.03em}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+.price{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--gold-2);line-height:1}
+.price small{font-family:'Inter',sans-serif;font-size:11px;color:var(--muted-2);font-weight:400;letter-spacing:.04em}
+.view-hint{font-size:11px;color:var(--muted-2);font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:color .3s}
+.card:hover .view-hint{color:var(--gold-2)}
+@keyframes pulseGold{0%{box-shadow:0 0 0 0 rgba(201,162,39,.55)}100%{box-shadow:0 0 0 16px rgba(201,162,39,0)}}
+.card.just-added,.prow.just-added{border-color:var(--gold);animation:pulseGold 1.1s var(--ease) 2}
+.empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted-2);border:1px dashed var(--line-2);border-radius:var(--radius)}
+.empty-state b{display:block;color:var(--muted);font-size:16px;margin-bottom:6px;font-family:'Playfair Display',serif}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.contact-list{list-style:none;margin-top:32px;display:flex;flex-direction:column;gap:2px}
+.contact-list li{display:flex;flex-direction:column;gap:3px;padding:16px 0;border-bottom:1px solid var(--line)}
+.contact-list li b{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+.contact-list li span{font-size:15px;color:var(--text)}
+.form-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.field label{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);font-weight:600}
+.field input,.field textarea,.field select{width:100%;padding:13px 16px;border-radius:var(--radius-sm);background:var(--bg-2);border:1px solid var(--line);color:var(--text);font-size:14px;outline:none;transition:border-color .3s,box-shadow .3s,background .3s;appearance:none}
+.field textarea{resize:vertical;min-height:104px;line-height:1.6}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft);background:var(--surface-2)}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted-2)}
+.field small{font-size:11.5px;color:var(--muted-2);margin-top:4px}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+footer{padding:52px 0 36px;border-top:1px solid var(--line);background:var(--bg-2)}
+.foot-in{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.foot-in p{font-size:12.5px;color:var(--muted-2)}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.foot-links button,.foot-links a{font-size:12.5px;color:var(--muted);transition:color .3s}
+.foot-links button:hover,.foot-links a:hover{color:var(--gold-2)}
+.foot-links .admin-link{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:100px;border:1px solid var(--line);color:var(--muted);transition:all .3s}
+.foot-links .admin-link:hover{color:var(--gold-2);border-color:rgba(201,162,39,.4);background:var(--gold-soft)}
+.modal-bg{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.modal-bg.show{opacity:1;pointer-events:auto}
+.modal{width:min(880px,100%);max-height:90svh;overflow-y:auto;background:var(--bg-2);border:1px solid var(--line-2);border-radius:24px;transform:translateY(30px) scale(.97);opacity:0;transition:transform .45s var(--ease),opacity .35s var(--ease);box-shadow:0 40px 100px -30px #000;position:relative}
+.modal-bg.show .modal{transform:none;opacity:1}
+.modal-close{position:absolute;top:16px;right:16px;z-index:5;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:rgba(10,10,12,.75);backdrop-filter:blur(10px);border:1px solid var(--line-2);color:var(--text);transition:all .3s}
+.modal-close:hover{background:var(--danger);border-color:var(--danger);transform:rotate(90deg)}
+#prodModal{z-index:600}
+.pd-grid{display:grid;grid-template-columns:1fr 1fr}
+.pd-img{aspect-ratio:1/1;background:var(--surface-2);overflow:hidden}
+.pd-img img{width:100%;height:100%;object-fit:cover}
+.pd-body{padding:38px 34px;display:flex;flex-direction:column;gap:14px}
+.pd-body h2{font-size:clamp(22px,3vw,30px)}
+.pd-price{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold-2);font-weight:600;line-height:1}
+.pd-price small{font-family:'Inter';font-size:12px;color:var(--muted-2);font-weight:400}
+.pd-desc{font-size:14px;color:var(--muted);line-height:1.75}
+.pd-sizes{display:flex;gap:8px;flex-wrap:wrap}
+.pd-actions{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+.admin{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:scale(.99);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.admin.show{opacity:1;pointer-events:auto;transform:none}
+.admin-top{height:70px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:var(--bg-2);gap:16px}
+.admin-top .brand-txt i{color:var(--gold)}
+.admin-login{flex:1;display:grid;place-items:center;padding:24px;background:radial-gradient(700px 400px at 50% 0%,rgba(201,162,39,.09),transparent 70%)}
+.login-card{width:min(400px,100%);background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:38px 32px;box-shadow:var(--shadow);text-align:center}
+.login-card .lock{width:56px;height:56px;border-radius:16px;margin:0 auto 20px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#141005;font-size:22px}
+.login-card h2{font-size:24px;margin-bottom:8px}
+.login-card p{font-size:13px;color:var(--muted-2);margin-bottom:26px}
+.login-card .field{text-align:left}
+.login-err{color:var(--danger);font-size:12.5px;margin-top:10px;min-height:18px}
+.admin-panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.admin-tabs{display:flex;gap:4px;padding:12px 24px 0;border-bottom:1px solid var(--line);background:var(--bg-2);overflow-x:auto;flex-shrink:0}
+.admin-tabs::-webkit-scrollbar{height:0}
+.atab{padding:12px 20px;font-size:13.5px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;transition:all .3s;white-space:nowrap}
+.atab:hover{color:var(--text)}
+.atab.active{color:var(--gold-2);border-bottom-color:var(--gold)}
+.admin-body{flex:1;overflow-y:auto;padding:26px 24px 60px}
+.admin-wrap{max-width:1050px;margin-inline:auto}
+.admin-hd{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.admin-hd h2{font-size:24px}
+.admin-hd p{font-size:13px;color:var(--muted-2)}
+.prow{display:flex;align-items:center;gap:16px;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;transition:border-color .3s,transform .3s,background .3s}
+.prow:hover{border-color:var(--line-2);background:var(--surface-2);transform:translateX(3px)}
+.prow img{width:62px;height:62px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--surface-2)}
+.prow-info{flex:1;min-width:0}
+.prow-info b{display:block;font-size:14px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow-info span{font-size:12px;color:var(--muted-2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.tag-btn{padding:7px 13px;border-radius:100px;font-size:11.5px;font-weight:600;border:1px solid var(--line);transition:all .3s;white-space:nowrap}
+.tag-btn.on{background:rgba(63,191,127,.13);border-color:rgba(63,191,127,.4);color:var(--ok)}
+.tag-btn.off{background:rgba(255,255,255,.03);color:var(--muted-2)}
+.tag-btn:hover{transform:translateY(-1px)}
+.act-btn{padding:7px 13px;border-radius:9px;font-size:11.5px;font-weight:600;border:1px solid var(--line);color:var(--muted);transition:all .3s}
+.act-btn:hover{color:var(--text);background:var(--surface-3);border-color:var(--line-2)}
+.act-btn.danger:hover{color:#fff;background:var(--danger);border-color:var(--danger)}
+.cat-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 18px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:9px;transition:all .3s}
+.cat-row:hover{border-color:var(--line-2);background:var(--surface-2)}
+.cat-row b{font-size:14px;font-weight:500}
+.cat-row small{color:var(--muted-2);font-size:11.5px;margin-left:8px}
+.img-pick{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.img-prev{width:88px;height:88px;border-radius:12px;object-fit:cover;background:var(--surface-2);border:1px solid var(--line);flex-shrink:0}
+.file-label{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px dashed var(--line-2);color:var(--muted);font-size:12.5px;cursor:pointer;transition:all .3s}
+.file-label:hover{border-color:var(--gold);color:var(--gold-2);background:var(--gold-soft)}
+.file-label input{display:none}
+.gh-note{background:var(--gold-soft);border:1px solid rgba(201,162,39,.3);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.6;max-width:700px}
+.gh-note b{color:var(--gold-2)}
+.gh-note code{background:var(--bg-2);padding:2px 6px;border-radius:4px;font-size:12px;color:var(--gold-2)}
+.gh-status{padding:12px 16px;border-radius:10px;font-size:13px;margin-top:16px;max-width:700px;display:none}
+.gh-status.show{display:block}
+.gh-status.ok{background:rgba(63,191,127,.1);border:1px solid rgba(63,191,127,.3);color:#a8f0c6}
+.gh-status.err{background:rgba(229,84,75,.1);border:1px solid rgba(229,84,75,.3);color:#ffb3ae}
+.gh-status.info{background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.toast-wrap{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:10px;align-items:center;pointer-events:none}
+.toast{padding:13px 22px;border-radius:100px;background:var(--surface-3);border:1px solid var(--line-2);color:var(--text);font-size:13px;font-weight:500;box-shadow:0 20px 50px -15px #000;animation:toastIn .5s var(--ease) forwards;display:flex;align-items:center;gap:9px;backdrop-filter:blur(12px);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+.toast.ok{border-color:rgba(63,191,127,.45);color:#a8f0c6}
+.toast.err{border-color:rgba(229,84,75,.45);color:#ffb3ae}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:none}}
+.toast.out{animation:toastOut .4s var(--ease) forwards}
+@keyframes toastOut{to{opacity:0;transform:translateY(-10px) scale(.96)}}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr;gap:38px}.pd-grid{grid-template-columns:1fr}.pd-img{aspect-ratio:16/10}.pd-body{padding:26px 22px}}
+@media (max-width:760px){
+  .hamburger{display:flex}
+  .nav{position:fixed;top:74px;left:0;right:0;flex-direction:column;align-items:stretch;gap:4px;background:rgba(12,12,16,.97);backdrop-filter:blur(20px);padding:14px 5vw 22px;border-bottom:1px solid var(--line);transform:translateY(-14px);opacity:0;pointer-events:none;transition:transform .4s var(--ease),opacity .35s}
+  .nav.open{transform:none;opacity:1;pointer-events:auto}
+  .nav-link{padding:14px 16px;border-radius:12px;font-size:15px}
+  .section{padding:72px 0}
+  .hero{padding:120px 0 70px;min-height:auto}
+  .hero-stats{gap:30px;margin-top:46px}
+  .hero-stats b{font-size:24px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+  .form-card{padding:24px}
+  .admin-body{padding:20px 16px 60px}
+  .admin-tabs{padding:10px 16px 0}
+  .atab{padding:11px 15px;font-size:13px}
+  .prow{flex-wrap:wrap}
+  .prow-actions{width:100%;justify-content:flex-start;padding-top:6px;border-top:1px solid var(--line);margin-top:4px}
+  .row-2{grid-template-columns:1fr}
+  .foot-in{flex-direction:column;text-align:center}
 }
-a { color: inherit; text-decoration: none; }
-button, input, select, textarea { font: inherit; }
-button, a { -webkit-tap-highlight-color: transparent; }
-img { max-width: 100%; }
-
-.container {
-  width: min(1100px, calc(100% - 36px));
-  margin: auto;
-}
-.silver { color: var(--silver-light); }
-.eyebrow {
-  color: var(--silver);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: .72rem;
-  font-weight: 700;
-}
-.section { padding: 68px 0; }
-.section-heading {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 34px;
-}
-.section-heading h2 {
-  font: 500 clamp(1.9rem,5vw,2.7rem)/1.2 Georgia,serif;
-  margin: 9px 0 12px;
-}
-.section-heading p { color: var(--muted); margin: 0; }
-
-.jay-mataji {
-  display: inline-block;
-  color: #ff2a2a;              /* bright red — change this code to change the colour */
-  padding-bottom: 5px;
-  border-bottom: 2px solid var(--silver);   /* the line below the text */
-}
-.topbar {
-  padding: 8px 12px;
-  text-align: center;
-  color: #ff2a2a;
-  background: #0b100d;
-  border-bottom: 1px solid var(--border);
-  font-size: .76rem;
-  letter-spacing: 2px;
-  font-weight: 700;
-}
-
-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: rgba(16,23,19,.95);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
-}
-.nav {
-  min-height: 76px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  min-width: 0;
-}
-.logo {
-  width: 62px;
-  height: 62px;
-  display: grid;
-  place-items: center;
-  color: var(--silver-light);
-  font: 1.5rem Georgia,serif;
-  flex-shrink: 0;
-}
-.logo img, .hero-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-.brand-name {
-  color: var(--silver-light);
-  font: 700 1.08rem Georgia,serif;
-  letter-spacing: 1.2px;
-  line-height: 1.2;
-}
-.brand-sub {
-  color: var(--muted);
-  font-size: .63rem;
-  letter-spacing: .7px;
-  margin-top: 4px;
-}
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 19px;
-  font-size: .82rem;
-  color: #dfe1e6;
-}
-.nav-links a:hover { color: var(--silver-light); }
-
-.btn {
-  border: 1px solid var(--silver);
-  border-radius: 50px;
-  padding: 12px 19px;
-  min-height: 45px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: .86rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform .2s, background .2s, border-color .2s;
-  text-align: center;
-}
-.btn:hover { transform: translateY(-2px); }
-.btn:focus-visible, a:focus-visible, input:focus-visible,
-select:focus-visible, textarea:focus-visible {
-  outline: 2px solid var(--silver-light);
-  outline-offset: 3px;
-}
-.btn-silver {
-  background: linear-gradient(135deg,#f3f4f7,#a9aeb7);
-  color: #17180f;
-  border-color: transparent;
-}
-.btn-outline { background: transparent; color: var(--silver-light); }
-.btn-whatsapp { background: var(--green); color: white; border-color: transparent; }
-.btn-dark { background: #273229; color: var(--text); border-color: var(--border); }
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding: 78px 0 72px;
-  text-align: center;
-}
-.hero::before, .hero::after {
-  content: "";
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  border: 1px solid rgba(195,199,206,.1);
-  border-radius: 50%;
-  pointer-events: none;
-}
-.hero::before { top: 20px; left: -180px; }
-.hero::after { bottom: -190px; right: -140px; }
-.hero-content { position: relative; z-index: 1; }
-.hero-logo {
-  width: 170px;
-  height: 170px;
-  margin: 0 auto 20px;
-  display: grid;
-  place-items: center;
-  font: 3rem Georgia,serif;
-  color: var(--silver-light);
-}
-.hero h1 {
-  font: 500 clamp(2.6rem,9vw,5rem)/1.08 Georgia,serif;
-  color: var(--silver-light);
-  letter-spacing: 3px;
-  margin: 8px 0;
-}
-.hero h2 {
-  font-size: clamp(.92rem,3vw,1.18rem);
-  font-weight: 400;
-  color: #e4e7ec;
-  letter-spacing: 2px;
-  margin: 15px 0 12px;
-}
-.hero-description {
-  max-width: 690px;
-  color: var(--muted);
-  margin: 0 auto;
-  padding: 0 8px;
-}
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 27px;
-}
-.trust-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 11px;
-  margin-top: 28px;
-}
-.trust-item {
-  padding: 8px 14px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,.025);
-  border-radius: 50px;
-  color: #d3d6dc;
-  font-size: .76rem;
-}
-
-.card {
-  background: linear-gradient(145deg,var(--card),#151d18);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 23px;
-  box-shadow: var(--shadow);
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 18px;
-}
-.service-card {
-  transition: transform .25s,border-color .25s;
-}
-.service-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(195,199,206,.6);
-}
-.service-icon {
-  width: 49px;
-  height: 49px;
-  display: grid;
-  place-items: center;
-  border-radius: 15px;
-  background: rgba(195,199,206,.1);
-  color: var(--silver-light);
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-.card h3 {
-  margin: 0 0 8px;
-  font: 500 1.23rem Georgia,serif;
-  color: var(--silver-light);
-}
-.card p { color: var(--muted); font-size: .88rem; margin: 0 0 15px; }
-.text-link { color: var(--silver-light); font-size: .83rem; font-weight: 700; }
-
-.about-box { max-width: 800px; margin: auto; text-align: center; }
-.about-box p { color: var(--muted); line-height: 1.85; }
-
-.office-label {
-  display: inline-block;
-  color: var(--silver-light);
-  border: 1px solid var(--border);
-  background: rgba(195,199,206,.08);
-  border-radius: 50px;
-  padding: 5px 12px;
-  font-size: .7rem;
-  letter-spacing: 1px;
-  margin-bottom: 14px;
-}
-.info-row {
-  display: flex;
-  gap: 11px;
-  margin: 13px 0;
-  color: #e6e8ec;
-  font-size: .85rem;
-  align-items: flex-start;
-  overflow-wrap: anywhere;
-}
-.info-icon {
-  width: 34px;
-  height: 34px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  background: rgba(195,199,206,.1);
-  color: var(--silver-light);
-}
-.office-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
-.office-actions .btn { padding: 10px 14px; min-height: 41px; font-size: .77rem; }
-
-.team-card { text-align: center; }
-.team-card h3 { font-size: 1.45rem; }
-.person-photo, .photo-placeholder {
-  width: 190px;
-  height: 190px;
-  border-radius: 50%;
-  border: 2px solid var(--silver);
-  object-fit: cover;
-  background: #273229;
-  margin: 0 auto 16px;
-  display: grid;
-  place-items: center;
-}
-.photo-placeholder { color: var(--silver-light); font-size: 2.5rem; }
-.team-role {
-  color: var(--silver);
-  font-size: .77rem;
-  margin: 0 0 12px;
-  letter-spacing: .5px;
-}
-
-.booking-wrap {
-  display: grid;
-  grid-template-columns: .85fr 1.15fr;
-  gap: 24px;
-  align-items: start;
-}
-.booking-intro {
-  padding: 29px;
-  border-radius: var(--radius);
-  background:
-    radial-gradient(circle at 90% 10%,rgba(195,199,206,.16),transparent 35%),
-    #1b251e;
-  border: 1px solid var(--border);
-}
-.booking-intro h3 {
-  font: 500 1.7rem Georgia,serif;
-  color: var(--silver-light);
-  margin: 10px 0;
-}
-.booking-intro p { color: var(--muted); font-size: .89rem; }
-.booking-form { display: grid; gap: 14px; }
-.form-group { display: grid; gap: 6px; min-width: 0; }
-.form-group label { color: #e5e7eb; font-size: .81rem; font-weight: 600; }
-.form-group input, .form-group select, .form-group textarea {
-  width: 100%;
-  min-width: 0;
-  padding: 13px 14px;
-  border: 1px solid rgba(195,199,206,.22);
-  background: #101713;
-  color: var(--text);
-  border-radius: 12px;
-  outline: none;
-}
-.form-group input:focus, .form-group select:focus,
-.form-group textarea:focus { border-color: var(--silver); }
-.form-group textarea { min-height: 100px; resize: vertical; }
-.form-group select option { background: #101713; color: white; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
-  gap: 14px;
-}
-.contact-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 9px;
-  padding: 20px 12px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 17px;
-  transition: transform .2s,border-color .2s;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-.contact-card:hover { transform: translateY(-3px); border-color: var(--silver); }
-.contact-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 15px;
-  display: grid;
-  place-items: center;
-  font-size: 1.35rem;
-  background: rgba(195,199,206,.1);
-  color: var(--silver-light);
-}
-.contact-card strong { font-size: .88rem; }
-.contact-card span { color: var(--muted); font-size: .74rem; }
-.contact-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 4px; }
-.contact-actions .btn { min-height: 36px; padding: 8px 11px; font-size: .73rem; }
-
-.socials {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 12px 18px;
-  border-radius: 50px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  font-size: .84rem;
-  transition: background .2s,border-color .2s,transform .2s;
-}
-.social-link:hover { background: var(--card2); border-color: var(--silver); transform: translateY(-2px); }
-.social-icon { color: var(--silver-light); font-weight: 800; font-size: 1.1rem; }
-
-.footer {
-  padding: 37px 0 105px;
-  background: #0b100d;
-  border-top: 1px solid var(--border);
-  text-align: center;
-}
-.footer-brand { font: 500 1.55rem Georgia,serif; color: var(--silver-light); letter-spacing: 2px; }
-.footer p { color: var(--muted); font-size: .78rem; }
-.footer-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 18px;
-  margin: 20px 0;
-  font-size: .8rem;
-  color: #dcdfe4;
-}
-.floating-whatsapp {
-  position: fixed;
-  z-index: 30;
-  bottom: 20px;
-  right: 20px;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: white;
-  background: var(--green);
-  font-size: 1.55rem;
-  box-shadow: 0 7px 25px rgba(0,0,0,.4);
-  border: 2px solid rgba(255,255,255,.18);
-  transition: transform .2s;
-}
-.floating-whatsapp:hover { transform: scale(1.07); }
-
-@media (max-width: 800px) {
-  .container { width: min(100% - 30px,600px); }
-  .nav { min-height: 67px; }
-  .nav-links { display: none; }
-  .nav > .btn { padding: 10px 13px; min-height: 40px; font-size: .75rem; }
-  .section { padding: 53px 0; }
-  .hero { padding: 59px 0 54px; }
-  .grid { grid-template-columns: 1fr; }
-  .booking-wrap { grid-template-columns: 1fr; }
-  .contact-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-}
-@media (max-width: 420px) {
-  .container { width: calc(100% - 24px); }
-  .brand-name { font-size: .88rem; }
-  .brand-sub { font-size: .53rem; letter-spacing: .35px; }
-  .logo { width: 52px; height: 52px; }
-  .hero h1 { letter-spacing: 1.5px; }
-  .hero-actions { flex-direction: column; align-items: stretch; }
-  .hero-actions .btn { width: 100%; }
-  .contact-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
-  .contact-card { padding: 16px 8px; }
-  .form-row { grid-template-columns: 1fr; }
-  .card { padding: 19px; }
-  .booking-intro { padding: 22px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    transition-duration: .01ms !important;
-    animation-duration: .01ms !important;
-  }
-}
+@media (max-width:420px){.grid{grid-template-columns:1fr}.hero-cta .btn{width:100%}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
 </style>
 </head>
-
 <body>
 
-<div class="topbar"><span class="jay-mataji">॥ જય માતાજી ॥</span></div>
-
-<header>
-  <div class="container nav">
-    <a class="brand" href="#home" aria-label="Real Vaastu home">
-      <div class="logo" id="navLogo" aria-label="Real Vaastu logo"><img src="images/real-vaastu-logo.png" alt="Real Vaastu logo"></div>
-      <div>
-        <div class="brand-name" id="navName">Real Vaastu</div>
-        <div class="brand-sub">VAASTU & ASTROLOGY CONSULTANCY</div>
-      </div>
+<header class="hdr" id="hdr">
+  <div class="hdr-in">
+    <a class="brand" href="#home">
+      <span class="brand-mark">◆</span>
+      <span class="brand-txt"><b id="brandName">Hardware Co.</b><i id="brandTag">Tools &amp; Fittings</i></span>
     </a>
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#offices">Offices</a>
-      <a href="#team">Our Team</a>
-      <a href="#contact">Contact</a>
+    <nav class="nav" id="nav">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#catalogue" class="nav-link">Catalogue</a>
+      <a href="#contact" class="nav-link">Contact</a>
     </nav>
-    <a class="btn btn-silver" href="#booking">Book Appointment</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
   </div>
 </header>
 
-<main>
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="container hero-content">
-      <div class="hero-logo" id="heroLogo" aria-label="Real Vaastu logo"><img src="images/real-vaastu-logo.png" alt="Real Vaastu logo"></div>
-      <div class="eyebrow"><span class="jay-mataji">॥ JAY MATAJI ॥</span></div>
-      <h1 id="heroName">REAL VAASTU</h1>
-      <h2 id="heroTagline">VAASTU & ASTROLOGY CONSULTANCY</h2>
-      <p class="hero-description" id="heroDescription"></p>
-      <div class="hero-actions">
-        <a class="btn btn-silver" href="#booking">📅 Book a Consultation</a>
-        <a class="btn btn-whatsapp" id="heroWhatsApp" href="#" target="_blank" rel="noopener">☘ WhatsApp Us</a>
-        <a class="btn btn-outline" href="#services">Explore Services ↓</a>
-      </div>
-      <div class="trust-row">
-        <span class="trust-item">✦ Personalized Consultancy</span>
-        <span class="trust-item">✦ Residential & Commercial</span>
-        <span class="trust-item">✦ Rajkot & Panvel Offices</span>
-      </div>
+<section class="hero" id="home">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-in">
+    <span class="eyebrow">◆ Trusted Hardware Supplier</span>
+    <h1 class="hero-title">Premium Hardware,<br><em>Crafted</em> for Professionals.</h1>
+    <p class="hero-sub">Browse our full catalogue of power tools, hand tools, fittings and finishes. Tap any product to view full details or ask us directly on WhatsApp.</p>
+    <div class="hero-cta">
+      <a href="#catalogue" class="btn btn-gold">Browse Catalogue →</a>
+      <a href="#contact" class="btn btn-outline">Contact Us</a>
     </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="section" id="about">
-    <div class="container about-box">
-      <div class="eyebrow">ABOUT OUR BUSINESS</div>
-      <div class="section-heading">
-        <h2>Guidance for Your Space & Life</h2>
-      </div>
-      <p id="aboutText"></p>
+    <div class="hero-stats">
+      <div><b id="statProducts">0</b><span>Products</span></div>
+      <div><b id="statCats">0</b><span>Categories</span></div>
+      <div><b>25+</b><span>Years Trusted</span></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- SERVICES -->
-  <section class="section" id="services">
-    <div class="container">
-      <div class="section-heading">
-        <div class="eyebrow">WHAT WE OFFER</div>
-        <h2>Our Services</h2>
-        <p>Vaastu and astrology consultancy for different properties and requirements.</p>
-      </div>
-      <div class="grid" id="servicesGrid"></div>
+<section class="section" id="catalogue">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Our Catalogue</span>
+      <h2>Everything You Need</h2>
+      <p>Filter by category or search for a product. Prices shown are indicative — contact us for bulk rates.</p>
     </div>
-  </section>
-
-  <!-- OFFICES -->
-  <section class="section" id="offices">
-    <div class="container">
-      <div class="section-heading">
-        <div class="eyebrow">FIND US</div>
-        <h2>Our Offices</h2>
-        <p>Visit our main office in Rajkot or branch office in Panvel.</p>
+    <div class="toolbar reveal">
+      <div class="search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="searchInput" type="search" placeholder="Search products…" autocomplete="off">
       </div>
-      <div class="grid" id="officesGrid"></div>
+      <div class="chips" id="catChips"></div>
     </div>
-  </section>
+    <div class="grid" id="productGrid"></div>
+  </div>
+</section>
 
-  <!-- TEAM -->
-  <section class="section" id="team">
-    <div class="container">
-      <div class="section-heading">
-        <div class="eyebrow">MEET OUR CONSULTANTS</div>
-        <h2>Our Team</h2>
-        <p>Connect with our consultants for appointments and enquiries.</p>
-      </div>
-      <div class="grid" id="teamGrid"></div>
+<section class="section alt" id="contact">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <span class="eyebrow">Get In Touch</span>
+      <h2>Let's Talk Business</h2>
+      <p style="color:var(--muted);margin-top:12px;max-width:420px;">Send us your requirement and we'll get back with pricing, availability and delivery timelines.</p>
+      <ul class="contact-list">
+        <li><b>Phone / WhatsApp</b><span id="cPhone">—</span></li>
+        <li><b>Email</b><span id="cEmail">—</span></li>
+        <li><b>Address</b><span id="cAddress">—</span></li>
+        <li><b>Timing</b><span>Mon – Sat · 9:00 AM – 8:00 PM</span></li>
+      </ul>
     </div>
-  </section>
-
-  <!-- APPOINTMENT -->
-  <section class="section" id="booking">
-    <div class="container">
-      <div class="section-heading">
-        <div class="eyebrow">GET IN TOUCH</div>
-        <h2>Book Your Appointment</h2>
-        <p>Submit your consultation enquiry directly through WhatsApp.</p>
+    <form class="form-card reveal" id="enquiryForm">
+      <h3 style="font-size:21px;margin-bottom:20px;">Send an Enquiry</h3>
+      <div class="row-2">
+        <div class="field"><label for="efName">Your Name</label><input id="efName" required placeholder="e.g. Ramesh Kumar"></div>
+        <div class="field"><label for="efPhone">Phone</label><input id="efPhone" required inputmode="tel" placeholder="10-digit number"></div>
       </div>
-      <div class="booking-wrap">
-        <div class="booking-intro">
-          <div class="eyebrow">CONSULTANCY ENQUIRY</div>
-          <h3>Let's Discuss Your Requirements</h3>
-          <p>Fill out the form with your contact details, location, preferred service and appointment preferences. WhatsApp will open with your enquiry ready to send.</p>
-          <div class="info-row">
-            <span class="info-icon">📅</span>
-            <span>Choose your preferred appointment date and time.</span>
-          </div>
-          <div class="info-row">
-            <span class="info-icon">💬</span>
-            <span>Continue your discussion directly with our team.</span>
-          </div>
-          <div class="info-row">
-            <span class="info-icon">📍</span>
-            <span>Select the Rajkot office, Panvel office or online consultation.</span>
-          </div>
-          <div class="info-row">
-            <span class="info-icon">☎</span>
-            <span>For direct contact, use the consultant contact cards below.</span>
-          </div>
-        </div>
+      <div class="field"><label for="efMsg">Requirement</label><textarea id="efMsg" placeholder="Tell us what you need — products, quantities, sizes…"></textarea></div>
+      <button type="submit" class="btn btn-gold btn-block">Send Enquiry</button>
+      <p style="font-size:11.5px;color:var(--muted-2);margin-top:14px;text-align:center;">Your message will open in WhatsApp — hit send there to reach us.</p>
+    </form>
+  </div>
+</section>
 
-        <div class="card">
-          <form class="booking-form" id="bookingForm">
-            <div class="form-group">
-              <label for="customerName">Full Name *</label>
-              <input id="customerName" name="name" type="text"
-                placeholder="Enter your full name" required maxlength="100" autocomplete="name">
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="customerPhone">Phone Number *</label>
-                <input id="customerPhone" name="phone" type="tel"
-                  placeholder="Your contact number" required maxlength="20" autocomplete="tel">
-              </div>
-              <div class="form-group">
-                <label for="customerEmail">Email</label>
-                <input id="customerEmail" name="email" type="email"
-                  placeholder="Your email address" maxlength="120" autocomplete="email">
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="customerState">State *</label>
-                <input id="customerState" name="state" type="text"
-                  placeholder="Enter your state" required maxlength="80" autocomplete="address-level1">
-              </div>
-              <div class="form-group">
-                <label for="customerCity">City *</label>
-                <input id="customerCity" name="city" type="text"
-                  placeholder="Enter your city" required maxlength="80" autocomplete="address-level2">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="serviceSelect">Select Service *</label>
-              <select id="serviceSelect" name="service" required>
-                <option value="">Choose a service</option>
-              </select>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="appointmentDate">Preferred Date</label>
-                <input id="appointmentDate" name="date" type="date">
-              </div>
-              <div class="form-group">
-                <label for="appointmentTime">Preferred Time</label>
-                <select id="appointmentTime" name="time">
-                  <option value="">Select time</option>
-                  <option>Morning</option>
-                  <option>Afternoon</option>
-                  <option>Evening</option>
-                  <option>Flexible</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="officeSelect">Consultation Office / Mode</label>
-              <select id="officeSelect" name="office">
-                <option value="">Select preference</option>
-                <option>Main Office — Rajkot</option>
-                <option>Branch Office — Panvel</option>
-                <option>Online Consultation</option>
-                <option>Not Decided</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="customerMessage">Your Requirements</label>
-              <textarea id="customerMessage" name="message"
-                placeholder="Briefly describe your property or consultation requirements."
-                maxlength="1000"></textarea>
-            </div>
-
-            <button class="btn btn-whatsapp" type="submit">
-              Send Appointment Enquiry via WhatsApp
-            </button>
-            <small style="color:var(--muted);font-size:.72rem">
-              This form prepares a WhatsApp message. Your appointment is not confirmed until the business responds.
-            </small>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="section" id="contact">
-    <div class="container">
-      <div class="section-heading">
-        <div class="eyebrow">CONTACT INFORMATION</div>
-        <h2>Connect With Us</h2>
-        <p>Contact either consultant or reach Real Vaastu through our official channels.</p>
-      </div>
-      <div class="contact-grid" id="contactGrid"></div>
-    </div>
-  </section>
-
-  <!-- SOCIAL MEDIA -->
-  <section class="section" id="social">
-    <div class="container">
-      <div class="section-heading">
-        <div class="eyebrow">FOLLOW OUR JOURNEY</div>
-        <h2>Connect on Social Media</h2>
-        <p>Follow our official profiles for updates and information.</p>
-      </div>
-      <div class="socials" id="socialLinks"></div>
-    </div>
-  </section>
-</main>
-
-<footer class="footer">
-  <div class="container">
-    <div class="footer-brand" id="footerName">REAL VAASTU</div>
-    <p id="footerTagline">Vaastu & Astrology Consultancy</p>
-    <div class="footer-nav">
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#offices">Offices</a>
-      <a href="#team">Our Team</a>
-      <a href="#booking">Appointments</a>
+<footer>
+  <div class="wrap foot-in">
+    <p>© <span id="year"></span> <span id="footName">Hardware Co.</span> — All rights reserved.</p>
+    <div class="foot-links">
+      <a href="#catalogue">Catalogue</a>
       <a href="#contact">Contact</a>
+      <button id="adminOpenBtn2" class="admin-link">🔒 Admin Panel</button>
     </div>
-    <p><span class="jay-mataji">॥ JAY MATAJI ॥</span></p>
-    <p>© <span id="year"></span> <span id="copyrightName">REAL VAASTU</span>. All rights reserved.</p>
-    <p style="font-size:.68rem">Appointment requests are subject to confirmation by the business.</p>
-    <p style="font-size:.68rem"><a href="https://realvaastu.com/" target="_blank" rel="noopener">Official Website</a></p>
   </div>
 </footer>
 
-<a class="floating-whatsapp" id="floatingWhatsApp"
-  href="#" target="_blank" rel="noopener"
-  aria-label="Chat with Real Vaastu on WhatsApp">☏</a>
+<div class="modal-bg" id="pdModal">
+  <div class="modal" style="max-width:880px;padding:0;overflow:hidden;">
+    <button class="modal-close" data-close-pd>✕</button>
+    <div class="pd-grid" id="pdContent"></div>
+  </div>
+</div>
+
+<div class="admin" id="admin">
+  <div class="admin-top">
+    <div class="brand"><span class="brand-mark">◆</span><span class="brand-txt"><b>Admin Panel</b><i>Control Center</i></span></div>
+    <button class="btn btn-outline btn-sm" id="adminCloseBtn">← Back to Site</button>
+  </div>
+  <div class="admin-login" id="adminLogin">
+    <form class="login-card" id="loginForm">
+      <div class="lock">🔒</div>
+      <h2>Admin Access</h2>
+      <p>Enter your password to manage products &amp; categories.</p>
+      <div class="field"><label for="adminPass">Password</label><input id="adminPass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+      <button type="submit" class="btn btn-gold btn-block">Unlock Dashboard</button>
+      <div class="login-err" id="loginErr"></div>
+    </form>
+  </div>
+  <div class="admin-panel hidden" id="adminPanel">
+    <div class="admin-tabs">
+      <button class="atab active" data-tab="products">Products</button>
+      <button class="atab" data-tab="categories">Categories</button>
+      <button class="atab" data-tab="messages">Messages</button>
+      <button class="atab" data-tab="github">GitHub Sync</button>
+      <button class="atab" data-tab="settings">Settings</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-wrap tab-pane" data-pane="products">
+        <div class="admin-hd">
+          <div><h2>Products</h2><p id="prodCountTxt">0 products</p></div>
+          <button class="btn btn-gold btn-sm" id="addProductBtn">+ Add Product</button>
+        </div>
+        <div class="search" style="max-width:100%;margin-bottom:18px;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="adminSearch" type="search" placeholder="Search products…" autocomplete="off">
+        </div>
+        <div id="adminProductList"></div>
+      </div>
+      <div class="admin-wrap tab-pane hidden" data-pane="categories">
+        <div class="admin-hd"><div><h2>Categories</h2><p>Group your products for easier browsing.</p></div></div>
+        <form id="catForm" style="display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap;">
+          <input id="catInput" placeholder="New category name…" required style="flex:1;min-width:200px;padding:12px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);outline:none;">
+          <button type="submit" class="btn btn-gold btn-sm">+ Add Category</button>
+        </form>
+        <div id="adminCatList"></div>
+      </div>
+      <div class="admin-wrap tab-pane hidden" data-pane="messages">
+        <div class="admin-hd"><div><h2>WhatsApp Messages</h2><p>Customize the messages used when customers tap WhatsApp buttons.</p></div></div>
+        <form id="messagesForm" style="max-width:700px;">
+          <div class="field">
+            <label>Product Enquiry Message</label>
+            <textarea id="msgProduct" style="min-height:100px;"></textarea>
+            <small>Placeholders: {business}, {product}, {price}, {unit}</small>
+          </div>
+          <div class="field">
+            <label>Contact Form Message</label>
+            <textarea id="msgContact" style="min-height:100px;"></textarea>
+            <small>Placeholders: {business}, {name}, {phone}, {message}</small>
+          </div>
+          <button type="submit" class="btn btn-gold">Save Messages</button>
+        </form>
+      </div>
+      <div class="admin-wrap tab-pane hidden" data-pane="github">
+        <div class="admin-hd"><div><h2>GitHub Sync</h2><p>Push your catalogue to GitHub so every device (mobile, PC) sees the same data.</p></div></div>
+        <div class="gh-note">
+          <b>How it works:</b> Your site loads <code>data.json</code> from your GitHub repo on every page view. When you save a change here, it gets pushed to GitHub automatically — all devices see it on refresh.<br><br>
+          <b>Setup:</b> Create a <b>Fine-grained personal access token</b> at <code>github.com/settings/tokens?type=beta</code> with <b>Contents: Read and write</b> access to this repo only. Paste it below.
+        </div>
+        <form id="githubForm" style="max-width:560px;">
+          <div class="row-2">
+            <div class="field"><label>GitHub Username</label><input id="ghOwner" placeholder="your-username"></div>
+            <div class="field"><label>Repository Name</label><input id="ghRepo" placeholder="your-repo"></div>
+          </div>
+          <div class="row-2">
+            <div class="field"><label>Branch</label><input id="ghBranch" placeholder="main" value="main"></div>
+            <div class="field"><label>Auto-publish on save</label>
+              <label style="display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;cursor:pointer;">
+                <input type="checkbox" id="ghAutoPublish" checked style="width:16px;height:16px;accent-color:var(--gold);">
+                <span style="font-size:13px;color:var(--text);text-transform:none;letter-spacing:0;">Enabled</span>
+              </label>
+            </div>
+          </div>
+          <div class="field"><label>Personal Access Token</label><input id="ghToken" type="password" placeholder="github_pat_..."><small>Stored only in this browser (localStorage). Never committed to the repo.</small></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;">
+            <button type="submit" class="btn btn-gold">Save &amp; Test</button>
+            <button type="button" class="btn btn-outline" id="ghPublishNow">⬆ Publish Now</button>
+            <button type="button" class="btn btn-outline" id="ghDisconnect" style="color:var(--danger);border-color:rgba(229,84,75,.35);">Disconnect</button>
+          </div>
+        </form>
+        <div class="gh-status" id="ghStatus"></div>
+      </div>
+      <div class="admin-wrap tab-pane hidden" data-pane="settings">
+        <div class="admin-hd"><div><h2>Settings</h2><p>Business info shown on your website.</p></div></div>
+        <form id="settingsForm" style="max-width:560px;">
+          <div class="field"><label>Business Name</label><input id="stName" required></div>
+          <div class="field"><label>Tagline / Sub-name</label><input id="stTag"></div>
+          <div class="field"><label>WhatsApp Number (with country code, digits only)</label><input id="stPhone" placeholder="919876543210"></div>
+          <div class="field"><label>Email</label><input id="stEmail" type="email"></div>
+          <div class="field"><label>Address</label><textarea id="stAddress" style="min-height:80px;"></textarea></div>
+          <div class="field"><label>Admin Password</label><input id="stPass" placeholder="Leave blank to keep current"></div>
+          <button type="submit" class="btn btn-gold">Save Settings</button>
+        </form>
+        <hr style="border:none;border-top:1px solid var(--line);margin:34px 0;">
+        <div style="max-width:560px;">
+          <h3 style="font-size:17px;margin-bottom:6px;">Backup &amp; Restore</h3>
+          <p style="font-size:13px;color:var(--muted-2);margin-bottom:16px;">Download your current catalogue as a JSON file, or restore from a previous backup.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-outline btn-sm" id="exportBtn">⬇ Export data.json</button>
+            <label class="btn btn-outline btn-sm" style="cursor:pointer;">⬆ Import JSON<input type="file" id="importInput" accept="application/json" style="display:none;"></label>
+            <button class="btn btn-outline btn-sm" id="resetBtn" style="color:var(--danger);border-color:rgba(229,84,75,.35);">Reset to Demo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="prodModal">
+  <div class="modal" style="max-width:620px;padding:30px 26px;">
+    <button class="modal-close" data-close-prod>✕</button>
+    <h2 style="font-size:23px;margin-bottom:22px;" id="prodFormTitle">Add Product</h2>
+    <form id="prodForm">
+      <input type="hidden" id="pfId">
+      <div class="field"><label>Product Name *</label><input id="pfName" required placeholder="e.g. Bosch Impact Drill 13mm"></div>
+      <div class="row-2">
+        <div class="field"><label>Category *</label><select id="pfCat" required></select></div>
+        <div class="field"><label>Price (₹)</label><input id="pfPrice" type="number" min="0" step="1" placeholder="0"></div>
+      </div>
+      <div class="row-2">
+        <div class="field"><label>Unit</label><input id="pfUnit" placeholder="pc / kg / box"></div>
+        <div class="field"><label>Sizes (comma separated)</label><input id="pfSizes" placeholder="4mm, 6mm, 8mm"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea id="pfDesc" placeholder="Short product description…"></textarea></div>
+      <div class="field">
+        <label>Product Image</label>
+        <div class="img-pick">
+          <img class="img-prev" id="pfPreview" alt="preview">
+          <div style="display:flex;flex-direction:column;gap:8px;flex:1;min-width:170px;">
+            <input id="pfImgUrl" placeholder="Paste image URL…" style="padding:11px 14px;border-radius:10px;background:var(--bg-2);border:1px solid var(--line);outline:none;font-size:13px;">
+            <label class="file-label">📁 Upload from device<input type="file" id="pfImgFile" accept="image/*"></label>
+          </div>
+        </div>
+      </div>
+      <div class="field" style="flex-direction:row;align-items:center;gap:10px;margin-bottom:22px;">
+        <input type="checkbox" id="pfPublished" checked style="width:18px;height:18px;accent-color:var(--gold);">
+        <label for="pfPublished" style="text-transform:none;letter-spacing:0;font-size:13.5px;color:var(--text);cursor:pointer;">Publish on website</label>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button type="submit" class="btn btn-gold" style="flex:1;">Save Product</button>
+        <button type="button" class="btn btn-outline" data-close-prod>Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
 
 <script>
-/* ==================================================
-   REAL VAASTU — BUSINESS CONFIGURATION
-   Future edits: change details in this object.
-   WhatsApp numbers: country code + number, digits only.
-   Example: 919370176251
-================================================== */
+(function(){
+'use strict';
 
-const BUSINESS = {
-  name: "Real Vaastu",
-  tagline: "VAASTU & ASTROLOGY CONSULTANCY",
-  greeting: "॥ JAY MATAJI ॥",
-  logoImage: "images/real-vaastu-logo.png", // Replace with your logo file path
-
-  description:
-    "Professional Vaastu and Astrology Consultancy by Dr. Sukesh Tretiya and Hardik Tretiya. Serving residential, commercial and industrial clients from Rajkot, Gujarat and Panvel, Maharashtra.",
-
-  about:
-    "Welcome to Real Vaastu, led by Dr. Sukesh Tretiya and Hardik Tretiya. We provide Vaastu and astrology consultancy for houses, flats, factories, shops, offices and other properties. Contact us to discuss your requirements, available consultancy services and appointments.",
-
-  // General business contact — this WhatsApp number is used for the
-  // "Book Appointment" form, the floating WhatsApp button, and the
-  // header/hero "WhatsApp Us" button. REPLACE this example number
-  // with the real consultancy enquiry number.
-  whatsapp: "919099951152",   // EXAMPLE NUMBER — REPLACE: used by header/hero/floating WhatsApp buttons
-  inquiryWhatsapp: "919099951152",   // EXAMPLE NUMBER — REPLACE: this is where the Book Appointment form sends enquiries
-  phone: "+91 9370176251",
-  email: "sukeshtretiya@gmail.com",
-  website: "https://realvaastu.com/",
-
-  // Individual consultant contact details
-  contacts: [
-    {
-      name: "Dr. Sukesh Tretiya",
-      role: "Senior Vaastu & Astrology Consultant",
-      phone: "+91 9370176251",     // EXAMPLE NUMBER — REPLACE WITH DR. SUKESH'S REAL PHONE NUMBER
-      whatsapp: "919370176251"     // EXAMPLE NUMBER — REPLACE WITH DR. SUKESH'S REAL WHATSAPP NUMBER
-    },
-    {
-      name: "Hardik Tretiya",
-      role: "Vaastu Consultant",
-      phone: "+91 9099951152",
-      whatsapp: "919099951152"
-    }
-  ],
-
-  // Office information
-  offices: [
-    {
-      type: "MAIN OFFICE",
-      name: "Real Vaastu — Rajkot",
-      address:
-        "Shop No. 6, First Floor, Sukrut Complex, HJ Doshi Hospital Road, near Guruprasad Chowk, Panchsheel Wadi, Samrat Industrial Area",
-      city: "Rajkot, Gujarat 360004",
-      phone: "+91 9099951152",
-      maps: "https://maps.app.goo.gl/m7WAfJxg6JQAiGU58",
-      hours: "By appointment"
-    },
-    {
-      type: "BRANCH OFFICE",
-      name: "Real Vaastu — Panvel",
-      address:
-        "Navakar, Shop No. 2, Plot 1, Sector No. 1, Road No. 2, near K.K. Jeweller",
-      city: "New Panvel East, Panvel, Maharashtra 410206",
-      phone: "+91 9099951152",
-      maps: "https://maps.app.goo.gl/XGdPPsek1tPFs2pm9",
-      hours: "By appointment"
-    }
-  ],
-
-  // Services
-  services: [
-    {
-      icon: "⌂",
-      title: "Full Project Vaastu Consultancy",
-      description:
-        "Comprehensive Vaastu consultancy from project planning to completion, with detailed guidance throughout."
-    },
-    {
-      icon: "✧",
-      title: "One-Time Vaastu Consultancy",
-      description:
-        "Focused consultation for specific Vaastu questions, layouts and existing properties."
-    },
-    {
-      icon: "⌂",
-      title: "Residential Vaastu",
-      description:
-        "Vaastu consultancy for houses, bungalows, apartments and flats."
-    },
-    {
-      icon: "▦",
-      title: "Commercial Vaastu",
-      description:
-        "Consultancy for shops, offices, showrooms and commercial properties."
-    },
-    {
-      icon: "▤",
-      title: "Industrial Vaastu",
-      description:
-        "Consultancy for factories, industrial facilities and warehouses."
-    },
-    {
-      icon: "☼",
-      title: "Astrology Consultancy",
-      description:
-        "Personal astrology and horoscope consultations. Contact us for available services and appointments."
-    },
-    {
-      icon: "✦",
-      title: "Logo Design According to Astrology & Numerology",
-      description:
-        "Custom logo design for businesses and personal brands."
-    },
-    {
-      icon: "▧",
-      title: "Visiting Card Design According to Astrology & Numerology",
-      description:
-        "Visiting card design guided by astrology and numerology preferences."
-    }
-  ],
-
-  // Team photos: replace these paths with your own images.
-  // Put the files inside the images folder in your repository.
-  team: [
-    {
-      name: "Dr. Sukesh Tretiya",
-      role: "Senior Vaastu & Astrology Consultant",
-      image: "images/sukesh.jpg",
-      bio:
-        "Senior consultant at Real Vaastu, providing Vaastu and astrology consultancy. Contact for consultation enquiries and appointments."
-    }
-,
-    {
-      name: "Hardik Tretiya",
-      role: "Vaastu Consultant",
-      image: "images/hardik.jpg",
-      bio:
-        "Vaastu consultant at Real Vaastu. Contact Hardik for consultancy enquiries and appointment coordination."
-    },
-  ],
-
-  // Official social profiles
-  socials: [
-    {
-      name: "Instagram",
-      icon: "◎",
-      url: "https://www.instagram.com/drsukeshtretiya/"
-    },
-    {
-      name: "Facebook",
-      icon: "f",
-      url: "https://www.facebook.com/lalkitabkundali"
-    },
-    {
-      name: "YouTube",
-      icon: "▶",
-      url: "https://www.youtube.com/@DrSukeshTretiya"
-    }
-  ]
+var PREFIX = 'luxhw_';
+var store = {
+  get: function(k, fb){ try { var v = localStorage.getItem(PREFIX + k); return v === null ? fb : JSON.parse(v); } catch(e){ return fb; } },
+  set: function(k, v){ try { localStorage.setItem(PREFIX + k, JSON.stringify(v)); return true; } catch(e){ toast('Storage full! Use an image URL or a smaller image.', 'err'); return false; } },
+  del: function(k){ try { localStorage.removeItem(PREFIX + k); } catch(e){} }
 };
 
-/* ==================================================
-   HELPERS
-================================================== */
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function money(n){ if(n === '' || n === null || n === undefined || isNaN(Number(n)) || Number(n) === 0) return null; return '₹' + Number(n).toLocaleString('en-IN'); }
+var PLACEHOLDER = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d1d24"/><stop offset="1" stop-color="#101014"/></linearGradient></defs><rect width="400" height="300" fill="url(#g)"/><g fill="none" stroke="#c9a227" stroke-opacity="0.32" stroke-width="2"><circle cx="200" cy="136" r="40"/><path d="M200 96V80M200 192v-16M160 136h-16M256 136h-16"/><path d="M172 108l-11-11M228 108l11-11M172 164l-11 11M228 164l11 11"/></g><text x="200" y="232" font-family="sans-serif" font-size="13" fill="#5a5a66" text-anchor="middle" letter-spacing="4">NO IMAGE</text></svg>'
+);
+function imgOf(p){ return (p && p.image) ? p.image : PLACEHOLDER; }
 
-const $ = id => document.getElementById(id);
-const clean = value => String(value ?? "").trim();
+var DEFAULT_PRODUCT_MSG = 'Hello {business}, I\'m interested in {product} ({price}). Please share details.';
+var DEFAULT_CONTACT_MSG = 'Hello {business}, my name is {name}. Phone: {phone}. Requirement: {message}';
 
-function safeUrl(value, fallback = "#") {
-  const raw = clean(value);
-  if (!raw) return fallback;
-
-  try {
-    const url = new URL(raw);
-    if (["https:", "http:", "mailto:", "tel:"].includes(url.protocol)) {
-      return url.href;
-    }
-  } catch (_) {}
-
-  return fallback;
+function seedData(){
+  return {
+    settings: {
+      name:'Sharma Hardware & Tools', tag:'Tools • Fittings • Finishes',
+      phone:'919876543210', email:'sales@sharmahardware.com',
+      address:'Shop 12, Main Market, Industrial Area, Your City — 000000',
+      password:'admin@0003',
+      templates:{ product: DEFAULT_PRODUCT_MSG, contact: DEFAULT_CONTACT_MSG }
+    },
+    categories:[
+      { id:'c1', name:'Power Tools' }, { id:'c2', name:'Hand Tools' },
+      { id:'c3', name:'Fittings' }, { id:'c4', name:'Paint & Finishes' }
+    ],
+    products:[
+      { id:'p1', name:'Impact Drill 13mm', category:'Power Tools', price:3450, unit:'pc', sizes:['13mm','16mm'], desc:'Variable speed impact drill with 750W motor.', image:'', published:true },
+      { id:'p2', name:'Angle Grinder 4"', category:'Power Tools', price:2290, unit:'pc', sizes:['4 inch','5 inch'], desc:'850W heavy-duty angle grinder with overload protection.', image:'', published:true },
+      { id:'p3', name:'Adjustable Wrench Set', category:'Hand Tools', price:890, unit:'set', sizes:['8"','10"','12"'], desc:'Chrome vanadium steel adjustable wrenches.', image:'', published:true },
+      { id:'p4', name:'Screwdriver Kit (12 pc)', category:'Hand Tools', price:640, unit:'set', sizes:['Flat','Phillips','Torx'], desc:'Magnetic-tip screwdrivers with ergonomic grips.', image:'', published:true },
+      { id:'p5', name:'Stainless Steel Hinge', category:'Fittings', price:145, unit:'pc', sizes:['3 inch','4 inch','5 inch'], desc:'SS-304 butt hinge, rust resistant.', image:'', published:true },
+      { id:'p6', name:'Concealed Door Handle', category:'Fittings', price:420, unit:'pc', sizes:['Matte','Chrome','Gold'], desc:'Premium zinc-alloy concealed handle.', image:'', published:true },
+      { id:'p7', name:'Wall Emulsion Paint 20L', category:'Paint & Finishes', price:4850, unit:'bucket', sizes:['20L','10L','4L'], desc:'Low-VOC washable interior emulsion.', image:'', published:true },
+      { id:'p8', name:'Wood Varnish Gloss 4L', category:'Paint & Finishes', price:1250, unit:'can', sizes:['1L','4L'], desc:'Fast-drying polyurethane varnish for wood.', image:'', published:true }
+    ]
+  };
 }
 
-function phoneHref(phone) {
-  const value = clean(phone).replace(/[^\d+]/g, "");
-  return value ? "tel:" + value : "";
+var settings = {}, products = [], categories = [];
+var ghConfig = null;
+var ui = { cat: 'all', q: '', adminQ: '', tab: 'products' };
+var justAddedId = null;
+var lastSyncOk = false;
+
+/* ---------- Toast ---------- */
+var toastWrap = document.getElementById('toastWrap');
+function toast(msg, type){
+  var el = document.createElement('div');
+  el.className = 'toast ' + (type || '');
+  el.textContent = msg;
+  toastWrap.appendChild(el);
+  setTimeout(function(){ el.classList.add('out'); setTimeout(function(){ el.remove(); }, 420); }, 2800);
 }
 
-function whatsappHref(number, message = "") {
-  const digits = clean(number).replace(/\D/g, "");
-  if (!digits) return "";
-
-  return "https://wa.me/" + digits +
-    (message ? "?text=" + encodeURIComponent(message) : "");
+/* ---------- Reveal ---------- */
+var io = null;
+if('IntersectionObserver' in window){
+  io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 }
-
-function makeElement(tag, className, text) {
-  const el = document.createElement(tag);
-  if (className) el.className = className;
-  if (text !== undefined) el.textContent = text;
-  return el;
-}
-
-function makeExternalLink(text, href, className = "btn btn-outline") {
-  const a = makeElement("a", className, text);
-  a.href = href || "#";
-
-  if (href && /^https?:\/\//i.test(href)) {
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-  }
-  return a;
-}
-
-/* ==================================================
-   HEADER & HERO
-================================================== */
-
-function renderHeader() {
-  $("navName").textContent = BUSINESS.name;
-  $("heroName").textContent = BUSINESS.name.toUpperCase();
-  $("heroTagline").textContent = BUSINESS.tagline;
-  $("heroDescription").textContent = BUSINESS.description;
-  $("aboutText").textContent = BUSINESS.about;
-  ["navLogo", "heroLogo"].forEach(id => {
-    const logo = $(id);
-    logo.replaceChildren();
-    const image = document.createElement("img");
-    image.src = BUSINESS.logoImage;
-    image.alt = BUSINESS.name + " logo";
-    image.onerror = () => {
-      logo.textContent = "RV";
-    };
-    logo.append(image);
+function observeReveals(){
+  document.querySelectorAll('.reveal:not(.in)').forEach(function(el){
+    if(io) io.observe(el); else el.classList.add('in');
   });
-  $("footerName").textContent = BUSINESS.name;
-  $("copyrightName").textContent = BUSINESS.name;
-  $("footerTagline").textContent = BUSINESS.tagline;
-  $("year").textContent = new Date().getFullYear();
-
-  $("heroWhatsApp").href = whatsappHref(
-    BUSINESS.whatsapp,
-    "Hello " + BUSINESS.name +
-    ", I would like to enquire about your consultancy services."
-  );
-
-  $("floatingWhatsApp").href = whatsappHref(
-    BUSINESS.whatsapp,
-    "Hello " + BUSINESS.name +
-    ", I would like to know more about your services."
-  );
 }
 
-/* ==================================================
-   SERVICES
-================================================== */
+/* ---------- DOM refs ---------- */
+var pdModal    = document.getElementById('pdModal');
+var prodModal  = document.getElementById('prodModal');
+var adminEl    = document.getElementById('admin');
+var adminLogin = document.getElementById('adminLogin');
+var adminPanel = document.getElementById('adminPanel');
+var adminBody  = document.querySelector('.admin-body');
 
-function renderServices() {
-  const grid = $("servicesGrid");
-  const select = $("serviceSelect");
-  grid.replaceChildren();
+function lockScroll(){
+  var anyOpen = adminEl.classList.contains('show') || prodModal.classList.contains('show') || pdModal.classList.contains('show');
+  document.body.style.overflow = anyOpen ? 'hidden' : '';
+}
 
-  // Preserve only the initial placeholder
-  select.replaceChildren(
-    new Option("Choose a service", "")
-  );
+/* ============================================================
+   DATA PERSISTENCE — GitHub Sync
+   ============================================================ */
 
-  BUSINESS.services.forEach(service => {
-    const card = makeElement("article", "card service-card");
-    const icon = makeElement("div", "service-icon", service.icon || "✦");
-    const title = makeElement("h3", "", service.title);
-    const description = makeElement("p", "", service.description);
-    const link = makeElement(
-      "a",
-      "text-link",
-      "Enquire about this service →"
-    );
+function b64EncodeUnicode(str){
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(m, p1){
+    return String.fromCharCode(parseInt(p1, 16));
+  }));
+}
 
-    link.href = "#booking";
-    link.addEventListener("click", () => {
-      select.value = service.title;
+function getCurrentData(){
+  return { settings: settings, categories: categories, products: products };
+}
+
+function loadGhConfig(){
+  ghConfig = store.get('ghconfig', null);
+}
+
+function setGhStatus(type, msg){
+  var el = document.getElementById('ghStatus');
+  if(!el) return;
+  el.className = 'gh-status show ' + type;
+  el.innerHTML = msg;
+}
+
+function fetchRemoteData(){
+  // Try relative data.json first (GitHub Pages same-origin)
+  var url = 'data.json?v=' + Date.now();
+  return fetch(url, { cache: 'no-store' })
+    .then(function(r){
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data){
+      if(!data || typeof data !== 'object') throw new Error('Invalid format');
+      if(!data.settings || !Array.isArray(data.products)) throw new Error('Invalid format');
+      return data;
     });
-
-    card.append(icon, title, description, link);
-    grid.append(card);
-
-    select.add(new Option(service.title, service.title));
-  });
 }
 
-/* ==================================================
-   OFFICE CARDS
-================================================== */
+function publishToGitHub(data, commitMsg){
+  if(!ghConfig || !ghConfig.token || !ghConfig.owner || !ghConfig.repo){
+    return Promise.reject(new Error('GitHub not configured'));
+  }
+  var branch = ghConfig.branch || 'main';
+  var apiBase = 'https://api.github.com/repos/' + ghConfig.owner + '/' + ghConfig.repo + '/contents/data.json';
+  var headers = {
+    'Authorization': 'Bearer ' + ghConfig.token,
+    'Accept': 'application/vnd.github+json',
+    'Content-Type': 'application/json'
+  };
 
-function renderOffices() {
-  const grid = $("officesGrid");
-  grid.replaceChildren();
-
-  BUSINESS.offices.forEach(office => {
-    const card = makeElement("article", "card");
-
-    const label = makeElement("span", "office-label", office.type);
-    const title = makeElement("h3", "", office.name);
-
-    const address = makeElement("div", "info-row");
-    address.append(
-      makeElement("span", "info-icon", "📍"),
-      makeElement("span", "", office.address + ", " + office.city)
-    );
-
-    const hours = makeElement("div", "info-row");
-    hours.append(
-      makeElement("span", "info-icon", "◷"),
-      makeElement("span", "", office.hours)
-    );
-
-    const actions = makeElement("div", "office-actions");
-    const map = makeExternalLink(
-      "📍 Get Directions",
-      safeUrl(office.maps)
-    );
-    const call = makeExternalLink(
-      "☎ Call Office",
-      phoneHref(office.phone),
-      "btn btn-dark"
-    );
-
-    actions.append(map, call);
-    card.append(label, title, address, hours, actions);
-    grid.append(card);
-  });
-}
-
-/* ==================================================
-   CONSULTANT PROFILES
-================================================== */
-
-function renderTeam() {
-  const grid = $("teamGrid");
-  grid.replaceChildren();
-
-  BUSINESS.team.forEach(person => {
-    const card = makeElement("article", "card team-card");
-
-    if (person.image) {
-      const image = makeElement("img", "person-photo");
-      image.src = person.image;
-      image.alt = person.name;
-      image.loading = "lazy";
-
-      image.onerror = () => {
-        const placeholder = makeElement(
-          "div", "photo-placeholder", "✧"
-        );
-        image.replaceWith(placeholder);
+  return fetch(apiBase + '?ref=' + branch, { headers: headers })
+    .then(function(r){
+      if(r.status === 404) return null;
+      if(!r.ok){
+        return r.json().then(function(e){
+          throw new Error((e && e.message) || ('Fetch failed (' + r.status + ')'));
+        });
+      }
+      return r.json();
+    })
+    .then(function(existing){
+      var body = {
+        message: commitMsg || 'Update catalogue data',
+        content: b64EncodeUnicode(JSON.stringify(data, null, 2)),
+        branch: branch
       };
-
-      card.append(image);
-    } else {
-      card.append(makeElement("div", "photo-placeholder", "✧"));
-    }
-
-    const name = makeElement("h3", "", person.name);
-    const role = makeElement("div", "team-role", person.role);
-    const bio = makeElement("p", "", person.bio);
-
-    card.append(name, role, bio);
-    grid.append(card);
-  });
+      if(existing && existing.sha) body.sha = existing.sha;
+      return fetch(apiBase, { method: 'PUT', headers: headers, body: JSON.stringify(body) });
+    })
+    .then(function(r){
+      if(!r.ok){
+        return r.json().then(function(e){
+          throw new Error((e && e.message) || ('Publish failed (' + r.status + ')'));
+        });
+      }
+      return r.json();
+    });
 }
 
-/* ==================================================
-   CONTACT CARDS
-   Includes individual Call & WhatsApp buttons.
-   Blank numbers automatically hide their buttons.
-================================================== */
-
-function renderContacts() {
-  const grid = $("contactGrid");
-  grid.replaceChildren();
-
-  BUSINESS.contacts.forEach(person => {
-    const card = makeElement("div", "contact-card");
-    card.append(
-      makeElement("div", "contact-icon", "👤"),
-      makeElement("strong", "", person.name),
-      makeElement("span", "", person.role)
-    );
-
-    const actions = makeElement("div", "contact-actions");
-
-    const callUrl = phoneHref(person.phone);
-    if (callUrl) {
-      actions.append(
-        makeExternalLink("☎ Call", callUrl, "btn btn-outline")
-      );
-    }
-
-    const waUrl = whatsappHref(
-      person.whatsapp,
-      "Hello " + person.name +
-      ", I would like to enquire about a consultation."
-    );
-
-    if (waUrl) {
-      actions.append(
-        makeExternalLink(
-          "WhatsApp",
-          waUrl,
-          "btn btn-whatsapp"
-        )
-      );
-    }
-
-    if (actions.childElementCount) card.append(actions);
-    grid.append(card);
-  });
-
-  const general = [
-    {
-      icon: "✉",
-      title: "Business Email",
-      detail: BUSINESS.email,
-      url: "mailto:" + BUSINESS.email
-    },
-    {
-      icon: "🌐",
-      title: "Official Website",
-      detail: BUSINESS.website,
-      url: safeUrl(BUSINESS.website)
-    },
-    {
-      icon: "📅",
-      title: "Book Appointment",
-      detail: "Request a consultation",
-      url: "#booking"
-    },
-    {
-      icon: "📍",
-      title: "Main Office — Rajkot",
-      detail: BUSINESS.offices[0].city,
-      url: safeUrl(BUSINESS.offices[0].maps)
-    },
-    {
-      icon: "📍",
-      title: "Branch Office — Panvel",
-      detail: BUSINESS.offices[1].city,
-      url: safeUrl(BUSINESS.offices[1].maps)
-    }
-  ];
-
-  general.forEach(item => {
-    const a = makeElement("a", "contact-card");
-    a.href = item.url;
-
-    if (/^https?:\/\//i.test(item.url)) {
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-    }
-
-    a.append(
-      makeElement("div", "contact-icon", item.icon),
-      makeElement("strong", "", item.title),
-      makeElement("span", "", item.detail)
-    );
-    grid.append(a);
-  });
+function autoPublish(commitMsg){
+  if(!ghConfig || !ghConfig.autoPublish) return Promise.resolve(false);
+  return publishToGitHub(getCurrentData(), commitMsg)
+    .then(function(){
+      lastSyncOk = true;
+      return true;
+    })
+    .catch(function(err){
+      lastSyncOk = false;
+      throw err;
+    });
 }
 
-/* ==================================================
-   SOCIAL MEDIA
-================================================== */
-
-function renderSocials() {
-  const grid = $("socialLinks");
-  grid.replaceChildren();
-
-  BUSINESS.socials.forEach(social => {
-    const a = makeElement("a", "social-link");
-    a.href = safeUrl(social.url);
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-
-    a.append(
-      makeElement("span", "social-icon", social.icon),
-      makeElement("span", "", social.name)
-    );
-    grid.append(a);
-  });
+function saveLocally(){
+  store.set('settings', settings);
+  store.set('categories', categories);
+  store.set('products', products);
 }
 
-/* ==================================================
-   APPOINTMENT FORM
-   Opens WhatsApp with a pre-filled enquiry.
-   This does not automatically confirm bookings.
-================================================== */
+/* ============================================================
+   PUBLIC RENDERING
+   ============================================================ */
 
-$("bookingForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const form = event.currentTarget;
-  if (!form.reportValidity()) return;
-
-  const data = new FormData(form);
-
-  const name = clean(data.get("name"));
-  const phone = clean(data.get("phone"));
-  const email = clean(data.get("email"));
-  const state = clean(data.get("state")) || "Not specified";
-  const city = clean(data.get("city")) || "Not specified";
-  const service = clean(data.get("service"));
-  const date = clean(data.get("date")) || "Not specified";
-  const time = clean(data.get("time")) || "Not specified";
-  const office = clean(data.get("office")) || "Not specified";
-  const message = clean(data.get("message")) || "No additional details";
-
-  const enquiry =
-`*REAL VAASTU — APPOINTMENT ENQUIRY*
-
-*Name:* ${name}
-*Phone:* ${phone}
-*Email:* ${email || "Not provided"}
-*State:* ${state}
-*City:* ${city}
-
-*Service:* ${service}
-*Preferred Date:* ${date}
-*Preferred Time:* ${time}
-*Office / Mode:* ${office}
-
-*Requirements:*
-${message}
-
-Please contact me regarding consultation availability and appointment confirmation.`;
-
-  const url = whatsappHref(BUSINESS.inquiryWhatsapp, enquiry);
-
-  if (!url) {
-    alert("Please configure the consultancy enquiry WhatsApp number in the BUSINESS settings.");
+function renderBranding(){
+  document.getElementById('brandName').textContent = settings.name || 'Hardware Co.';
+  document.getElementById('brandTag').textContent = settings.tag || 'Tools & Fittings';
+  document.getElementById('footName').textContent = settings.name || 'Hardware Co.';
+  document.getElementById('cPhone').textContent = settings.phone ? ('+' + settings.phone) : '—';
+  document.getElementById('cEmail').textContent = settings.email || '—';
+  document.getElementById('cAddress').textContent = settings.address || '—';
+  document.title = (settings.name || 'Hardware') + ' — Catalogue';
+}
+function renderStats(){
+  document.getElementById('statProducts').textContent = products.filter(function(p){ return p.published; }).length;
+  document.getElementById('statCats').textContent = categories.length;
+}
+function renderChips(){
+  var html = '<button class="chip' + (ui.cat === 'all' ? ' active' : '') + '" data-cat="all">All Products</button>';
+  categories.forEach(function(c){
+    html += '<button class="chip' + (ui.cat === c.name ? ' active' : '') + '" data-cat="' + esc(c.name) + '">' + esc(c.name) + '</button>';
+  });
+  document.getElementById('catChips').innerHTML = html;
+}
+function renderProducts(){
+  var grid = document.getElementById('productGrid');
+  var q = ui.q.trim().toLowerCase();
+  var list = products.filter(function(p){ return p.published; }).filter(function(p){
+    if(ui.cat !== 'all' && p.category !== ui.cat) return false;
+    if(!q) return true;
+    return (p.name || '').toLowerCase().indexOf(q) > -1 || (p.desc || '').toLowerCase().indexOf(q) > -1 || (p.category || '').toLowerCase().indexOf(q) > -1;
+  });
+  if(!list.length){
+    grid.innerHTML = '<div class="empty-state"><b>No products found</b>Try a different category or search term.</div>';
     return;
   }
+  grid.innerHTML = list.map(function(p){
+    var priceHtml = money(p.price) ? money(p.price) + (p.unit ? ' <small>/' + esc(p.unit) + '</small>' : '') : '<span style="font-size:14px;color:var(--muted)">On request</span>';
+    var sizes = (p.sizes || []).slice(0, 3).map(function(s){ return '<span class="size-tag">' + esc(s) + '</span>'; }).join('');
+    var extra = (p.sizes || []).length > 3 ? '<span class="size-tag">+' + (p.sizes.length - 3) + '</span>' : '';
+    var highlight = (p.id === justAddedId) ? ' just-added' : '';
+    return '<article class="card' + highlight + '" data-open="' + p.id + '">' +
+      '<div class="card-img"><img src="' + esc(imgOf(p)) + '" alt="' + esc(p.name) + '" loading="lazy" onerror="this.src=\'' + PLACEHOLDER + '\'"><span class="badge">' + esc(p.category || 'General') + '</span></div>' +
+      '<div class="card-body">' +
+        '<h3>' + esc(p.name) + '</h3>' +
+        (p.desc ? '<p class="card-desc">' + esc(p.desc) + '</p>' : '') +
+        (sizes ? '<div class="sizes">' + sizes + extra + '</div>' : '') +
+        '<div class="card-foot"><span class="price">' + priceHtml + '</span><span class="view-hint">View →</span></div>' +
+      '</div></article>';
+  }).join('');
+}
+function renderPublic(){ renderBranding(); renderStats(); renderChips(); renderProducts(); }
 
-  const opened = window.open(url, "_blank", "noopener,noreferrer");
-  if (!opened) {
-    // Fallback for browsers that block new tabs
-    window.location.href = url;
+/* ---------- Product detail ---------- */
+function openProduct(id){
+  var p = products.find(function(x){ return x.id === id; });
+  if(!p) return;
+  var sizes = (p.sizes || []).map(function(s){ return '<span class="size-tag">' + esc(s) + '</span>'; }).join('');
+  var priceHtml = money(p.price) ? money(p.price) : 'On request';
+  document.getElementById('pdContent').innerHTML =
+    '<div class="pd-img"><img src="' + esc(imgOf(p)) + '" alt="' + esc(p.name) + '" onerror="this.src=\'' + PLACEHOLDER + '\'"></div>' +
+    '<div class="pd-body">' +
+      '<span class="eyebrow" style="margin-bottom:0">' + esc(p.category || 'General') + '</span>' +
+      '<h2>' + esc(p.name) + '</h2>' +
+      '<div class="pd-price">' + priceHtml + (p.unit && money(p.price) ? ' <small>/ ' + esc(p.unit) + '</small>' : '') + '</div>' +
+      (p.desc ? '<p class="pd-desc">' + esc(p.desc) + '</p>' : '') +
+      (sizes ? '<div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);margin-bottom:8px;">Available Sizes</div><div class="pd-sizes">' + sizes + '</div></div>' : '') +
+      '<div class="pd-actions"><button class="btn btn-gold" data-wa="' + p.id + '">Ask on WhatsApp</button></div>' +
+    '</div>';
+  pdModal.classList.add('show'); lockScroll();
+}
+function closePd(){ pdModal.classList.remove('show'); lockScroll(); }
+
+/* ---------- WhatsApp helper ---------- */
+function fillTemplate(template, data){
+  return template.replace(/\{(\w+)\}/g, function(match, key){ return data[key] != null ? data[key] : ''; });
+}
+function openWhatsApp(text){
+  var phone = (settings.phone || '').replace(/\D/g, '');
+  if(!phone){ toast('Set a WhatsApp number in Settings first', 'err'); return; }
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
+}
+
+/* ---------- Contact form → WhatsApp ---------- */
+document.getElementById('enquiryForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var name = document.getElementById('efName').value.trim();
+  var phone = document.getElementById('efPhone').value.trim();
+  var msg = document.getElementById('efMsg').value.trim();
+  if(!name || !phone){ toast('Please fill name and phone', 'err'); return; }
+  var template = (settings.templates && settings.templates.contact) || DEFAULT_CONTACT_MSG;
+  var text = fillTemplate(template, {
+    business: settings.name || 'Hardware Co.',
+    name: name, phone: phone, message: msg || '(no extra details)'
+  });
+  openWhatsApp(text);
+  this.reset();
+  toast('Opening WhatsApp…', 'ok');
+});
+
+/* ---------- Admin open/close ---------- */
+function openAdmin(){
+  var hb = document.getElementById('hamburger'); if(hb) hb.classList.remove('open');
+  var nv = document.getElementById('nav'); if(nv) nv.classList.remove('open');
+  adminEl.classList.add('show'); lockScroll();
+  var authed = false;
+  try { authed = sessionStorage.getItem(PREFIX + 'auth') === '1'; } catch(e){}
+  if(authed){
+    adminLogin.classList.add('hidden'); adminPanel.classList.remove('hidden'); renderAdmin();
+  } else {
+    document.getElementById('adminPass').value = '';
+    document.getElementById('loginErr').textContent = '';
+    adminLogin.classList.remove('hidden'); adminPanel.classList.add('hidden');
+    setTimeout(function(){ document.getElementById('adminPass').focus(); }, 350);
+  }
+}
+function closeAdmin(){
+  adminEl.classList.remove('show');
+  try { sessionStorage.removeItem(PREFIX + 'auth'); } catch(e){}
+  document.getElementById('adminPass').value = '';
+  document.getElementById('loginErr').textContent = '';
+  adminPanel.classList.add('hidden');
+  adminLogin.classList.remove('hidden');
+  closeProdForm();
+  lockScroll();
+}
+
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var val = document.getElementById('adminPass').value;
+  var err = document.getElementById('loginErr');
+  if(val === (settings.password || 'admin@0003')){
+    try { sessionStorage.setItem(PREFIX + 'auth', '1'); } catch(e){}
+    err.textContent = '';
+    document.getElementById('adminPass').value = '';
+    adminLogin.classList.add('hidden'); adminPanel.classList.remove('hidden');
+    renderAdmin();
+    toast('Welcome back, Admin', 'ok');
+  } else {
+    err.textContent = 'Incorrect password. Try again.';
+    document.getElementById('adminPass').value = '';
+    document.getElementById('adminPass').focus();
   }
 });
 
-/* Set earliest appointment date to the user's local date. */
-const dateInput = $("appointmentDate");
-const today = new Date();
-dateInput.min = [
-  today.getFullYear(),
-  String(today.getMonth() + 1).padStart(2, "0"),
-  String(today.getDate()).padStart(2, "0")
-].join("-");
+document.querySelectorAll('.atab').forEach(function(btn){
+  btn.addEventListener('click', function(){ switchAdminTab(btn.dataset.tab); });
+});
+function switchAdminTab(tab){
+  ui.tab = tab;
+  document.querySelectorAll('.atab').forEach(function(b){ b.classList.toggle('active', b.dataset.tab === tab); });
+  document.querySelectorAll('.tab-pane').forEach(function(pane){ pane.classList.toggle('hidden', pane.dataset.pane !== tab); });
+}
 
-/* ==================================================
-   INITIALIZE WEBSITE
-================================================== */
+function renderAdmin(){
+  renderAdminProducts();
+  renderAdminCats();
+  renderMessagesForm();
+  renderGhForm();
+  renderSettingsForm();
+}
 
-renderHeader();
-renderServices();
-renderOffices();
-renderTeam();
-renderContacts();
-renderSocials();
-</script>
-</body>
-</html>
+/* ---------- Admin products ---------- */
+function renderAdminProducts(){
+  var list = document.getElementById('adminProductList');
+  var q = ui.adminQ.trim().toLowerCase();
+  var items = products.filter(function(p){
+    if(!q) return true;
+    return (p.name || '').toLowerCase().indexOf(q) > -1 || (p.category || '').toLowerCase().indexOf(q) > -1;
+  });
+  document.getElementById('prodCountTxt').textContent = products.length + ' product' + (products.length === 1 ? '' : 's') + ' · ' + products.filter(function(p){ return p.published; }).length + ' published';
+  if(!items.length){
+    list.innerHTML = '<div class="empty-state"><b>No products yet</b>Click “+ Add Product” to create your first one.</div>';
+    return;
+  }
+  list.innerHTML = items.map(function(p){
+    var highlight = (p.id === justAddedId) ? ' just-added' : '';
+    return '<div class="prow' + highlight + '">' +
+      '<img src="' + esc(imgOf(p)) + '" alt="" onerror="this.src=\'' + PLACEHOLDER + '\'">' +
+      '<div class="prow-info"><b>' + esc(p.name) + '</b><span>' + esc(p.category || '—') + ' · ' + (money(p.price) ? money(p.price) + (p.unit ? '/' + esc(p.unit) : '') : 'On request') + ((p.sizes && p.sizes.length) ? ' · ' + esc(p.sizes.join(', ')) : '') + '</span></div>' +
+      '<div class="prow-actions"><button class="tag-btn ' + (p.published ? 'on' : 'off') + '" data-toggle="' + p.id + '">' + (p.published ? '● Published' : '○ Draft') + '</button><button class="act-btn" data-edit="' + p.id + '">Edit</button><button class="act-btn danger" data-del-prod="' + p.id + '">Delete</button></div>' +
+    '</div>';
+  }).join('');
+}
+
+/* ---------- Admin categories ---------- */
+function renderAdminCats(){
+  var list = document.getElementById('adminCatList');
+  if(!categories.length){
+    list.innerHTML = '<div class="empty-state"><b>No categories</b>Add one above to organise your products.</div>';
+    return;
+  }
+  list.innerHTML = categories.map(function(c){
+    var n = products.filter(function(p){ return p.category === c.name; }).length;
+    return '<div class="cat-row"><div><b>' + esc(c.name) + '</b><small>' + n + ' product' + (n === 1 ? '' : 's') + '</small></div><button class="act-btn danger" data-del-cat="' + c.id + '">Delete</button></div>';
+  }).join('');
+}
+
+/* ---------- Admin messages ---------- */
+function renderMessagesForm(){
+  document.getElementById('msgProduct').value = (settings.templates && settings.templates.product) || DEFAULT_PRODUCT_MSG;
+  document.getElementById('msgContact').value = (settings.templates && settings.templates.contact) || DEFAULT_CONTACT_MSG;
+}
+document.getElementById('messagesForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var prev = settings.templates ? Object.assign({}, settings.templates) : {};
+  settings.templates = {
+    product: document.getElementById('msgProduct').value.trim() || DEFAULT_PRODUCT_MSG,
+    contact: document.getElementById('msgContact').value.trim() || DEFAULT_CONTACT_MSG
+  };
+  saveLocally();
+  autoPublish('Update WhatsApp messages')
+    .then(function(){ toast('Messages saved & published', 'ok'); })
+    .catch(function(){ toast('Messages saved locally (GitHub not synced)', 'err'); });
+});
+
+/* ---------- Admin GitHub ---------- */
+function renderGhForm(){
+  loadGhConfig();
+  var c = ghConfig || {};
+  document.getElementById('ghOwner').value = c.owner || '';
+  document.getElementById('ghRepo').value = c.repo || '';
+  document.getElementById('ghBranch').value = c.branch || 'main';
+  document.getElementById('ghToken').value = c.token || '';
+  document.getElementById('ghAutoPublish').checked = c.autoPublish !== false;
+  if(c.owner && c.repo){
+    setGhStatus('ok', '✓ Connected: <b>' + esc(c.owner) + '/' + esc(c.repo) + '</b> @ ' + esc(c.branch || 'main') + '<br>Auto-publish: ' + (c.autoPublish !== false ? 'ON' : 'OFF'));
+  } else {
+    setGhStatus('info', 'Not connected yet. Fill in the fields above and hit "Save &amp; Test".');
+  }
+}
+document.getElementById('githubForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var cfg = {
+    owner: document.getElementById('ghOwner').value.trim(),
+    repo: document.getElementById('ghRepo').value.trim(),
+    branch: document.getElementById('ghBranch').value.trim() || 'main',
+    token: document.getElementById('ghToken').value.trim(),
+    autoPublish: document.getElementById('ghAutoPublish').checked
+  };
+  if(!cfg.owner || !cfg.repo || !cfg.token){ setGhStatus('err', 'Please fill all fields.'); return; }
+  ghConfig = cfg;
+  store.set('ghconfig', cfg);
+  setGhStatus('info', 'Testing connection…');
+  // Test: GET repo
+  fetch('https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo, {
+    headers: { 'Authorization': 'Bearer ' + cfg.token, 'Accept': 'application/vnd.github+json' }
+  }).then(function(r){
+    if(!r.ok) return r.json().then(function(e){ throw new Error((e && e.message) || ('HTTP ' + r.status)); });
+    return r.json();
+  }).then(function(repo){
+    setGhStatus('ok', '✓ Connected: <b>' + esc(cfg.owner) + '/' + esc(cfg.repo) + '</b> @ ' + esc(cfg.branch) + '<br>Auto-publish: ' + (cfg.autoPublish ? 'ON' : 'OFF'));
+    toast('GitHub connected', 'ok');
+  }).catch(function(err){
+    setGhStatus('err', '✗ Connection failed: ' + esc(err.message));
+    toast('Connection failed', 'err');
+  });
+});
+document.getElementById('ghPublishNow').addEventListener('click', function(){
+  if(!ghConfig || !ghConfig.token){ setGhStatus('err', 'Configure GitHub first.'); return; }
+  setGhStatus('info', 'Publishing to GitHub…');
+  publishToGitHub(getCurrentData(), 'Publish catalogue from admin')
+    .then(function(){
+      setGhStatus('ok', '✓ Published to GitHub. All devices will see this data on next load.');
+      toast('Published to GitHub', 'ok');
+    })
+    .catch(function(err){
+      setGhStatus('err', '✗ Publish failed: ' + esc(err.message));
+      toast('Publish failed', 'err');
+    });
+});
+document.getElementById('ghDisconnect').addEventListener('click', function(){
+  if(!confirm('Disconnect GitHub? Local saves will no longer sync to other devices.')) return;
+  ghConfig = null;
+  store.del('ghconfig');
+  renderGhForm();
+  toast('Disconnected', 'ok');
+});
+
+/* ---------- Admin settings ---------- */
+function renderSettingsForm(){
+  document.getElementById('stName').value = settings.name || '';
+  document.getElementById('stTag').value = settings.tag || '';
+  document.getElementById('stPhone').value = settings.phone || '';
+  document.getElementById('stEmail').value = settings.email || '';
+  document.getElementById('stAddress').value = settings.address || '';
+  document.getElementById('stPass').value = '';
+}
+document.getElementById('settingsForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var prev = Object.assign({}, settings);
+  settings.name    = document.getElementById('stName').value.trim();
+  settings.tag     = document.getElementById('stTag').value.trim();
+  settings.phone   = document.getElementById('stPhone').value.replace(/\D/g, '');
+  settings.email   = document.getElementById('stEmail').value.trim();
+  settings.address = document.getElementById('stAddress').value.trim();
+  var newPass = document.getElementById('stPass').value.trim();
+  if(newPass) settings.password = newPass;
+  saveLocally();
+  document.getElementById('stPass').value = '';
+  renderBranding();
+  autoPublish('Update site settings')
+    .then(function(){ toast('Settings saved & published', 'ok'); })
+    .catch(function(){ toast('Settings saved locally (GitHub not synced)', 'err'); });
+});
+
+/* ---------- Product form ---------- */
+var currentImage = '';
+function fillCategorySelect(selected){
+  var sel = document.getElementById('pfCat');
+  sel.innerHTML = categories.map(function(c){
+    return '<option value="' + esc(c.name) + '"' + (c.name === selected ? ' selected' : '') + '>' + esc(c.name) + '</option>';
+  }).join('');
+  if(!categories.length) sel.innerHTML = '<option value="">— Add a category first —</option>';
+}
+function openProdForm(id){
+  var p = id ? products.find(function(x){ return x.id === id; }) : null;
+  if(id && !p){ toast('Product not found', 'err'); return; }
+  document.getElementById('prodFormTitle').textContent = p ? 'Edit Product' : 'Add Product';
+  document.getElementById('pfId').value = p ? p.id : '';
+  document.getElementById('pfName').value = p ? p.name : '';
+  document.getElementById('pfPrice').value = p ? (p.price || '') : '';
+  document.getElementById('pfUnit').value = p ? (p.unit || '') : 'pc';
+  document.getElementById('pfSizes').value = p ? (p.sizes || []).join(', ') : '';
+  document.getElementById('pfDesc').value = p ? (p.desc || '') : '';
+  document.getElementById('pfImgUrl').value = (p && p.image && p.image.indexOf('data:') !== 0) ? p.image : '';
+  document.getElementById('pfPublished').checked = p ? !!p.published : true;
+  currentImage = p ? (p.image || '') : '';
+  fillCategorySelect(p ? p.category : (categories[0] && categories[0].name));
+  updatePreview();
+  prodModal.classList.add('show'); lockScroll();
+  setTimeout(function(){ document.getElementById('pfName').focus(); }, 300);
+}
+function closeProdForm(){ prodModal.classList.remove('show'); currentImage = ''; lockScroll(); }
+function updatePreview(){ document.getElementById('pfPreview').src = currentImage || PLACEHOLDER; }
+
+document.getElementById('pfImgUrl').addEventListener('input', function(){ currentImage = this.value.trim(); updatePreview(); });
+document.getElementById('pfImgFile').addEventListener('change', function(e){
+  var file = e.target.files && e.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){ toast('Please select an image file', 'err'); return; }
+  compressImage(file, 700, function(dataUrl){
+    currentImage = dataUrl;
+    document.getElementById('pfImgUrl').value = '';
+    updatePreview();
+    toast('Image attached', 'ok');
+  });
+});
+function compressImage(file, maxW, cb){
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    var img = new Image();
+    img.onload = function(){
+      var scale = Math.min(1, maxW / img.width);
+      var canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      try { cb(canvas.toDataURL('image/jpeg', 0.72)); } catch(err){ cb(ev.target.result); }
+    };
+    img.onerror = function(){ cb(ev.target.result); };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('prodForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var id  = document.getElementById('pfId').value;
+  var name = document.getElementById('pfName').value.trim();
+  var cat  = document.getElementById('pfCat').value;
+  if(!categories.length){ toast('Create a category first', 'err'); return; }
+  if(!name){ toast('Product name is required', 'err'); return; }
+  if(!cat){ toast('Please select a category', 'err'); return; }
+  var data = {
+    name: name, category: cat,
+    price: Number(document.getElementById('pfPrice').value) || 0,
+    unit: document.getElementById('pfUnit').value.trim(),
+    sizes: document.getElementById('pfSizes').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean),
+    desc: document.getElementById('pfDesc').value.trim(),
+    image: currentImage,
+    published: document.getElementById('pfPublished').checked
+  };
+  var prev = products.slice();
+  if(id){
+    var idx = products.findIndex(function(p){ return p.id === id; });
+    if(idx === -1){ toast('Product not found', 'err'); return; }
+    products[idx] = Object.assign({}, products[idx], data);
+  } else {
+    data.id = uid(); products.unshift(data); justAddedId = data.id;
+  }
+  saveLocally();
+  closeProdForm();
+  ui.cat = 'all'; ui.q = '';
+  var si = document.getElementById('searchInput'); if(si) si.value = '';
+  ui.adminQ = '';
+  var as = document.getElementById('adminSearch'); if(as) as.value = '';
+  switchAdminTab('products');
+  if(adminBody) adminBody.scrollTop = 0;
+  renderAdminProducts(); renderPublic();
+  autoPublish((id ? 'Update product: ' : 'Add product: ') + name)
+    .then(function(){ toast((id ? 'Updated' : 'Added') + ' & published to GitHub', 'ok'); })
+    .catch(function(){ toast((id ? 'Updated' : 'Added') + ' locally (GitHub not synced)', 'err'); });
+  if(justAddedId){
+    setTimeout(function(){
+      document.querySelectorAll('.just-added').forEach(function(el){ el.classList.remove('just-added'); });
+      justAddedId = null;
+    }, 3200);
+  }
+});
+
+document.getElementById('adminProductList').addEventListener('click', function(e){
+  var t = e.target.closest('button');
+  if(!t) return;
+  if(t.dataset.toggle){
+    var p = products.find(function(x){ return x.id === t.dataset.toggle; });
+    if(p){
+      p.published = !p.published;
+      saveLocally(); renderAdminProducts(); renderPublic();
+      autoPublish((p.published ? 'Publish' : 'Unpublish') + ' product: ' + p.name)
+        .then(function(){ toast(p.published ? 'Published' : 'Moved to draft', 'ok'); })
+        .catch(function(){ toast('Toggled locally (GitHub not synced)', 'err'); });
+    }
+  }
+  if(t.dataset.edit) openProdForm(t.dataset.edit);
+  if(t.dataset.delProd){
+    if(confirm('Delete this product permanently?')){
+      var dp = products.find(function(x){ return x.id === t.dataset.delProd; });
+      products = products.filter(function(x){ return x.id !== t.dataset.delProd; });
+      saveLocally(); renderAdminProducts(); renderPublic();
+      autoPublish('Delete product: ' + (dp ? dp.name : ''))
+        .then(function(){ toast('Product deleted & synced', 'ok'); })
+        .catch(function(){ toast('Deleted locally (GitHub not synced)', 'err'); });
+    }
+  }
+});
+document.getElementById('adminSearch').addEventListener('input', function(){ ui.adminQ = this.value; renderAdminProducts(); });
+document.getElementById('addProductBtn').addEventListener('click', function(){ openProdForm(null); });
+
+/* ---------- Categories events ---------- */
+document.getElementById('catForm').addEventListener('
